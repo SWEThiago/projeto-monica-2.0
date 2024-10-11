@@ -1,0 +1,128 @@
+[
+    {
+        "id": 1,
+        "nome": "Vendedor 1",
+        "leads": [
+            {
+                "id": 101,
+                "data_lead": "2024-10-03",
+                "nome": "Cliente 1",
+                "contato": "cliente1@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "Renegade",
+                "status": "Convertido",
+                "faturado": "Sim",
+                "cliente_faturado": "Empresa X",
+                "nota_fiscal": "NF-1001"
+            },
+            {
+                "id": 102,
+                "data_lead": "2024-10-01",
+                "nome": "Cliente 2",
+                "contato": "cliente2@gmail.com",
+                "veiculo": "Jeep",
+                "modelo": "Compass",
+                "status": "Aberto",
+                "faturado": "Nao",
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 103,
+                "data_lead": "2024-09-28",
+                "nome": "Cliente 3",
+                "contato": "cliente3@gmail.com",
+                "veiculo": "Citroen",
+                "modelo": "C4",
+                "status": "Perdido",
+                "faturado": "Nao",
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "nome": "Vendedor 2",
+        "leads": [
+            {
+                "id": 201,
+                "data_lead": "2024-09-15",
+                "nome": "Cliente 4",
+                "contato": "cliente4@gmail.com",
+                "veiculo": "Peugeot",
+                "modelo": "208",
+                "status": "Convertido",
+                "faturado": "Sim",
+                "cliente_faturado": "Empresa Y",
+                "nota_fiscal": "NF-1002"
+            },
+            {
+                "id": 202,
+                "data_lead": "2024-09-22",
+                "nome": "Cliente 5",
+                "contato": "cliente5@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "1500",
+                "status": "Aberto",
+                "faturado": "Nao",
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 203,
+                "data_lead": "2024-09-25",
+                "nome": "Cliente 6",
+                "contato": "cliente6@gmail.com",
+                "veiculo": "Jeep",
+                "modelo": "Wrangler",
+                "status": "Perdido",
+                "faturado": "Nao",
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "nome": "Vendedor 3",
+        "leads": [
+            {
+                "id": 301,
+                "data_lead": "2024-10-05",
+                "nome": "Cliente 7",
+                "contato": "cliente7@gmail.com",
+                "veiculo": "Citroen",
+                "modelo": "C5",
+                "status": "Convertido",
+                "faturado": "Sim",
+                "cliente_faturado": "Empresa Z",
+                "nota_fiscal": "NF-1003"
+            },
+            {
+                "id": 302,
+                "data_lead": "2024-10-06",
+                "nome": "Cliente 8",
+                "contato": "cliente8@gmail.com",
+                "veiculo": "Peugeot",
+                "modelo": "3008",
+                "status": "Aberto",
+                "faturado": "Nao",
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 303,
+                "data_lead": "2024-10-07",
+                "nome": "Cliente 9",
+                "contato": "cliente9@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "2500",
+                "status": "Perdido",
+                "faturado": "Nao",
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            }
+        ]
+    }
+]

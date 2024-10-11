@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="vendedores-container">
+    <div class="vendedores-header">
+        <h2>Gestão de Vendedores</h2>
+        <form method="post" action="{{ url_for('vendedores') }}" class="form-adicionar-vendedor">
+            <input type="text" name="nome_vendedor" placeholder="Adicionar novo vendedor" class="input-novo-vendedor" required>
+            <button type="submit" class="botao-adicionar-vendedor">Adicionar</button>
+        </form>
+    </div>
+
+    <div class="vendedores-lista">
+        <h3>Lista de Vendedores</h3>
+        <ul class="lista-vendedores">
+            {% for vendedor in vendedores %}
+                <li class="vendedor-item">
+                    <span class="vendedor-nome">{{ vendedor.nome }}</span>
+                    <div class="vendedor-acoes">
+                        <a href="{{ url_for('detalhes_vendedor', vendedor_id=vendedor.id) }}" class="botao-detalhes-vendedor">Detalhes</a>
+                        <form method="post" action="{{ url_for('remover_vendedor_route', vendedor_id=vendedor.id) }}" class="form-remover-vendedor">
+                            <button type="submit" class="botao-remover-vendedor" onclick="return confirm('Tem certeza que deseja remover o vendedor {{ vendedor.nome }}?')">Remover</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

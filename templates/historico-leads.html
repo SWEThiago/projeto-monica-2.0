@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="historico-leads-container">
+    <div class="historico-leads-header">
+        <h2>Histórico de Leads</h2>
+        <p>Acompanhe a evolução dos leads ao longo do tempo</p>
+    </div>
+
+    <div class="filtro-tempo-container">
+        <h3>Filtrar por Período</h3>
+        <form class="filtro-tempo-form">
+            <div class="filtro-data">
+                <label for="inicio">Data de Início:</label>
+                <input type="date" id="inicio" name="inicio" class="input-data">
+            </div>
+            <div class="filtro-data">
+                <label for="fim">Data de Fim:</label>
+                <input type="date" id="fim" name="fim" class="input-data">
+            </div>
+            <button type="button" class="botao-filtrar" onclick="filtrarPorTempo()">Aplicar Filtro</button>
+        </form>
+    </div>
+
+    <div class="grafico-historico-container">
+        <h3>Evolução dos Leads</h3>
+        <canvas id="graficoEvolucaoLeads"></canvas>
+    </div>
+</div>
+
+<script>
+    // Script de exemplo para manipulação do gráfico (Chart.js)
+    function filtrarPorTempo() {
+        const inicio = document.getElementById('inicio').value;
+        const fim = document.getElementById('fim').value;
+        // Aqui você pode fazer a chamada ao backend ou filtrar os dados conforme necessário
+        atualizarGraficoLeads(inicio, fim);
+    }
+
+    function atualizarGraficoLeads(inicio, fim) {
+        const ctx = document.getElementById('graficoEvolucaoLeads').getContext('2d');
+        // Exemplo de criação de gráfico (os dados reais virão do backend)
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio'],
+                datasets: [{
+                    label: 'Leads Gerados',
+                    data: [12, 19, 3, 5, 2],
+                    borderColor: '#4CAF50',
+                    fill: false,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Mês'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Número de Leads'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Exemplo de carregamento inicial do gráfico (sem filtro)
+    document.addEventListener('DOMContentLoaded', function () {
+        atualizarGraficoLeads('', '');
+    });
+</script>
+{% endblock %}
