@@ -1,6 +1,7 @@
 // ==================== SCRIPTS PARA index.html ====================
 
 let vendedoresSelecionados = [];
+let chartConversao, chartAberto, chartPerdido, chartVariacao, chartRanking, chartVeiculo, chartComparativo; // Variáveis para armazenar instâncias dos gráficos
 
 // Capturar checkboxes de vendedores e gráficos
 document.querySelectorAll('input[name="vendedores"]').forEach(function(checkbox) {
@@ -23,119 +24,262 @@ function filtrarPorTempo() {
 }
 
 function atualizarGraficos(inicio = '', fim = '') {
-    const leadsFiltrados = getLeadsFiltrados(vendedoresSelecionados, inicio, fim);
-    atualizarGraficoConversao(leadsFiltrados);
-    atualizarGraficoAberto(leadsFiltrados);
-    atualizarGraficoPerdido(leadsFiltrados);
-    atualizarGraficoVariacao(leadsFiltrados);
-    atualizarGraficoRanking(leadsFiltrados);
-    atualizarGraficoVeiculo(leadsFiltrados);
-    atualizarGraficoComparativo(leadsFiltrados);
-}
-
-function getLeadsFiltrados(vendedoresSelecionados, inicio, fim) {
-    // Função simulada para pegar leads filtrados dos vendedores
-    return [];
-}
-
-function atualizarGraficoConversao(leads) {
-    const ctxConversao = document.getElementById('graficoConversao').getContext('2d');
-    // Código para atualizar gráfico de taxa de conversão
-}
-
-function atualizarGraficoAberto(leads) {
-    const ctxAberto = document.getElementById('graficoAberto').getContext('2d');
-    // Código para atualizar gráfico de leads em aberto
-}
-
-function atualizarGraficoPerdido(leads) {
-    const ctxPerdido = document.getElementById('graficoPerdido').getContext('2d');
-    // Código para atualizar gráfico de leads perdidos
-}
-
-function atualizarGraficoVariacao(leads) {
-    const ctxVariacao = document.getElementById('graficoVariacao').getContext('2d');
-    // Código para atualizar gráfico de variação de performance
-}
-
-function atualizarGraficoRanking(leads) {
-    const ctxRanking = document.getElementById('graficoRanking').getContext('2d');
-    // Código para atualizar gráfico de ranking dos vendedores
-}
-
-function atualizarGraficoVeiculo(leads) {
-    const ctxVeiculo = document.getElementById('graficoVeiculo').getContext('2d');
-    // Código para atualizar gráfico de leads por tipo de veículo
-}
-
-function atualizarGraficoComparativo(leads) {
-    const ctxComparativo = document.getElementById('graficoComparativo').getContext('2d');
-    // Código para atualizar gráfico comparativo de vendas
-}
-
-
-// ==================== SCRIPTS PARA vendedor_detalhes.html ====================
-
-function atualizarLead(leadId, vendedorId) {
-    // Função para atualizar os detalhes de um lead em vendedor_detalhes.html
-    // Exemplo de lógica:
-    const status = document.getElementById(`status_${leadId}`).value;
-    const faturado = document.getElementById(`faturado_${leadId}`).value;
-    const notaFiscal = document.getElementById(`nota_fiscal_${leadId}`).value;
-
-    // Fazer a chamada ao backend para atualizar o lead
-    fetch(`/vendedores/${vendedorId}/atualizar_lead`, {
+    // Fazer a chamada ao backend para obter leads filtrados
+    fetch('/grafico/filtrar', {
         method: 'POST',
-        body: JSON.stringify({ leadId, status, faturado, notaFiscal }),
         headers: {
             'Content-Type': 'application/json'
-        }
-    }).then(response => response.json()).then(data => {
-        if (data.success) {
-            alert('Lead atualizado com sucesso!');
+        },
+        body: JSON.stringify({
+            vendedores: vendedoresSelecionados,
+            inicio: inicio,
+            fim: fim
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
         } else {
-            alert('Erro ao atualizar o lead.');
+            atualizarGraficoConversao(data);
+            atualizarGraficoAberto(data);
+            atualizarGraficoPerdido(data);
+            atualizarGraficoVariacao(data);
+            atualizarGraficoRanking(data);
+            atualizarGraficoVeiculo(data);
+            atualizarGraficoComparativo(data);
         }
-    });
+    })
+    .catch(error => console.error('Erro ao atualizar os gráficos:', error));
 }
 
+// Funções para atualizar gráficos individuais
 
-// ==================== SCRIPTS PARA leads.html ====================
-
-function validarFormularioLead() {
-    const nome = document.getElementById('nome').value;
-    const contato = document.getElementById('contato').value;
-    const veiculo = document.getElementById('veiculo').value;
-
-    if (nome === '' || contato === '' || veiculo === '') {
-        alert('Por favor, preencha todos os campos obrigatórios.');
-        return false;
+function atualizarGraficoConversao(data) {
+    const ctxConversao = document.getElementById('graficoConversao').getContext('2d');
+    
+    // Destruir o gráfico anterior se existir
+    if (chartConversao) {
+        chartConversao.destroy();
     }
 
-    // Submeter o formulário caso esteja válido
-    return true;
-}
-
-
-// ==================== SCRIPTS PARA historico-leads.html ====================
-
-function carregarHistoricoLeads() {
-    // Lógica para carregar o histórico de leads e renderizar os gráficos
-    const inicio = document.getElementById('inicio').value;
-    const fim = document.getElementById('fim').value;
-
-    fetch('/historico_leads', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
+    chartConversao = new Chart(ctxConversao, {
+        type: 'bar',
+        data: {
+            labels: ['Abertos', 'Convertidos', 'Perdidos'],
+            datasets: [{
+                label: 'Leads',
+                data: [data.leads_abertos, data.leads_convertidos, data.leads_perdidos],
+                backgroundColor: ['#FFCE56', '#4CAF50', '#F7464A'],
+                borderColor: ['#FFCE56', '#4CAF50', '#F7464A'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Status dos Leads'
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Quantidade de Leads'
+                    }
+                }
+            }
         }
-    }).then(response => response.json()).then(data => {
-        // Atualizar o gráfico com os dados retornados
-        atualizarGraficoHistorico(data.leads_por_mes_ano);
     });
 }
 
-function atualizarGraficoHistorico(leadsPorMesAno) {
-    const ctxHistorico = document.getElementById('graficoHistorico').getContext('2d');
-    // Código para atualizar gráfico de histórico de leads por mês/ano
+function atualizarGraficoAberto(data) {
+    const ctxAberto = document.getElementById('graficoAberto').getContext('2d');
+
+    // Destruir o gráfico anterior se existir
+    if (chartAberto) {
+        chartAberto.destroy();
+    }
+
+    // Criar um novo gráfico
+    chartAberto = new Chart(ctxAberto, {
+        type: 'bar',
+        data: {
+            labels: ['Leads em Aberto'],
+            datasets: [{
+                label: 'Abertos',
+                data: [data.leads_abertos],
+                backgroundColor: '#FFCE56',
+                borderColor: '#FFCE56',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+function atualizarGraficoPerdido(data) {
+    const ctxPerdido = document.getElementById('graficoPerdido').getContext('2d');
+
+    // Destruir o gráfico anterior se existir
+    if (chartPerdido) {
+        chartPerdido.destroy();
+    }
+
+    // Criar um novo gráfico
+    chartPerdido = new Chart(ctxPerdido, {
+        type: 'bar',
+        data: {
+            labels: ['Leads Perdidos'],
+            datasets: [{
+                label: 'Perdidos',
+                data: [data.leads_perdidos],
+                backgroundColor: '#F7464A',
+                borderColor: '#F7464A',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+function atualizarGraficoVariacao(data) {
+    const ctxVariacao = document.getElementById('graficoVariacao').getContext('2d');
+
+    // Destruir o gráfico anterior se existir
+    if (chartVariacao) {
+        chartVariacao.destroy();
+    }
+
+    // Criar um novo gráfico
+    chartVariacao = new Chart(ctxVariacao, {
+        type: 'line',
+        data: {
+            labels: data.variacao_temporal.map(item => item.data),
+            datasets: [{
+                label: 'Status Temporal',
+                data: data.variacao_temporal.map(item => item.status === 'Convertido' ? 1 : (item.status === 'Aberto' ? 0.5 : 0)),
+                backgroundColor: '#4CAF50',
+                borderColor: '#4CAF50',
+                fill: false,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+function atualizarGraficoRanking(data) {
+    const ctxRanking = document.getElementById('graficoRanking').getContext('2d');
+
+    // Destruir o gráfico anterior se existir
+    if (chartRanking) {
+        chartRanking.destroy();
+    }
+
+    // Criar um novo gráfico
+    chartRanking = new Chart(ctxRanking, {
+        type: 'bar',
+        data: {
+            labels: data.ranking_vendedores.map(item => 'Vendedor ' + item.vendedor_id),
+            datasets: [{
+                label: 'Leads Convertidos',
+                data: data.ranking_vendedores.map(item => item.convertidos),
+                backgroundColor: '#4CAF50',
+                borderColor: '#4CAF50',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+function atualizarGraficoVeiculo(data) {
+    const ctxVeiculo = document.getElementById('graficoVeiculo').getContext('2d');
+
+    // Destruir o gráfico anterior se existir
+    if (chartVeiculo) {
+        chartVeiculo.destroy();
+    }
+
+    // Criar um novo gráfico
+    chartVeiculo = new Chart(ctxVeiculo, {
+        type: 'pie',
+        data: {
+            labels: Object.keys(data.leads_por_veiculo),
+            datasets: [{
+                label: 'Leads por Veículo',
+                data: Object.values(data.leads_por_veiculo),
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#F7464A'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+}
+
+function atualizarGraficoComparativo(data) {
+    const ctxComparativo = document.getElementById('graficoComparativo').getContext('2d');
+
+    // Destruir o gráfico anterior se existir
+    if (chartComparativo) {
+        chartComparativo.destroy();
+    }
+
+    // Criar um novo gráfico
+    chartComparativo = new Chart(ctxComparativo, {
+        type: 'line',
+        data: {
+            labels: data.comparativo_vendas.map(item => 'Vendedor ' + item.vendedor_id),
+            datasets: [{
+                label: 'Leads Convertidos',
+                data: data.comparativo_vendas.map(item => item.convertidos),
+                backgroundColor: '#4CAF50',
+                borderColor: '#4CAF50',
+                fill: false,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 }

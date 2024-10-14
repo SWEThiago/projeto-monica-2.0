@@ -124,5 +124,23 @@
                 "nota_fiscal": ""
             }
         ]
+    },
+    {
+        "id": 4,
+        "nome": "Thiago",
+        "leads": [
+            {
+                "id": 1,
+                "data_lead": "2024-10-14",
+                "nome": "Monica",
+                "contato": "teste@gmail.com",
+                "veiculo": "Jeep",
+                "modelo": "compass",
+                "status": null,
+                "faturado": "Nao",
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            }
+        ]
     }
 ]

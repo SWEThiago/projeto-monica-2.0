@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="leads-container">
+    <h2 class="leads-title">Adicionar Lead</h2>
+    <form method="POST" action="{{ url_for('leads') }}" class="leads-form">
+        <div class="form-group leads-vendedor">
+            <label for="vendedor_id" class="leads-label">Vendedor:</label>
+            <select id="vendedor_id" name="vendedor_id" required class="leads-select">
+                <option value="" disabled selected>Selecione um vendedor</option>
+                {% for vendedor in vendedores %}
+                <option value="{{ vendedor.id }}">{{ vendedor.nome }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group leads-nome">
+            <label for="nome" class="leads-label">Nome do Lead:</label>
+            <input type="text" id="nome" name="nome" required placeholder="Digite o nome completo" class="leads-input">
+        </div>
+
+        <div class="form-group leads-contato">
+            <label for="contato" class="leads-label">Contato:</label>
+            <input type="email" id="contato" name="contato" required placeholder="Digite o e-mail" class="leads-input">
+        </div>
+
+        <div class="form-group leads-veiculo">
+            <label for="veiculo" class="leads-label">Veículo:</label>
+            <select id="veiculo" name="veiculo" required class="leads-select">
+                <option value="" disabled selected>Selecione o veículo</option>
+                <option value="Ram">Ram</option>
+                <option value="Jeep">Jeep</option>
+                <option value="Citroen">Citroen</option>
+                <option value="Peugeot">Peugeot</option>
+                <option value="Semi Novos">Semi Novos</option>
+            </select>
+        </div>
+
+        <div class="form-group leads-modelo">
+            <label for="modelo" class="leads-label">Modelo do Veículo:</label>
+            <input type="text" id="modelo" name="modelo" required placeholder="Digite o modelo" class="leads-input">
+        </div>
+
+        <button type="submit" class="btn-adicionar-lead">Adicionar Lead</button>
+    </form>
+</div>
+{% endblock %}

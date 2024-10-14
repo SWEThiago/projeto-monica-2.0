@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from dados import (
-    adicionar_vendedor, remover_vendedor, obter_vendedor, 
+    carregar_dados, adicionar_vendedor, remover_vendedor, obter_vendedor, 
     adicionar_lead, remover_lead, obter_leads, calcular_leads_por_status
 )
 

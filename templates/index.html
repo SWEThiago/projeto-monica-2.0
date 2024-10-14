@@ -31,7 +31,7 @@
             <input type="date" id="fim" class="filter-input" name="fim">
         </div>
         <div class="filter-button-wrapper">
-            <button onclick="filtrarPorTempo()" class="filter-button">Filtrar</button>
+            <button type="button" onclick="filtrarPorTempo()" class="filter-button">Filtrar</button>
         </div>
     </div>
 
@@ -81,4 +81,8 @@
     </div>
 </div>
 
+<!-- Inclusão dos scripts JavaScript -->
+<!-- Certifique-se de que o caminho para o script está correto -->
+<script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
