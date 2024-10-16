@@ -31,8 +31,12 @@ def adicionar_vendedor(dados, nome_vendedor):
 
 # Função para remover um vendedor pelo ID
 def remover_vendedor(dados, vendedor_id):
-    dados = [vendedor for vendedor in dados if vendedor['id'] != vendedor_id]
-    salvar_dados(dados)
+    vendedor_existente = obter_vendedor(dados, vendedor_id)
+    if vendedor_existente:
+        dados[:] = [vendedor for vendedor in dados if vendedor['id'] != vendedor_id]  # Atualizando a lista diretamente
+        salvar_dados(dados)  # Salva os dados após a remoção
+    else:
+        raise ValueError(f"Vendedor com ID {vendedor_id} não encontrado")
 
 # Função para obter um vendedor pelo ID
 def obter_vendedor(dados, vendedor_id):
@@ -43,30 +47,33 @@ def obter_vendedor(dados, vendedor_id):
 
 # Função para adicionar um lead a um vendedor
 def adicionar_lead(dados, vendedor_id, novo_lead):
-    for vendedor in dados:
-        if vendedor['id'] == vendedor_id:
-            novo_lead_id = max([lead['id'] for lead in vendedor['leads']], default=0) + 1
-            novo_lead['id'] = novo_lead_id
-            vendedor['leads'].append(novo_lead)
-            salvar_dados(dados)
-            return novo_lead
-    return None
+    vendedor = obter_vendedor(dados, vendedor_id)
+    if vendedor:
+        novo_lead_id = max([lead['id'] for lead in vendedor['leads']], default=0) + 1
+        novo_lead['id'] = novo_lead_id
+        vendedor['leads'].append(novo_lead)
+        salvar_dados(dados)
+        return novo_lead
+    raise ValueError(f"Vendedor com ID {vendedor_id} não encontrado")
 
 # Função para remover um lead de um vendedor
 def remover_lead(dados, vendedor_id, lead_id):
-    for vendedor in dados:
-        if vendedor['id'] == vendedor_id:
-            vendedor['leads'] = [lead for lead in vendedor['leads'] if lead['id'] != lead_id]
-            salvar_dados(dados)
-            return True
-    return False
+    vendedor = obter_vendedor(dados, vendedor_id)
+    if vendedor:
+        leads_existentes = [lead for lead in vendedor['leads'] if lead['id'] == lead_id]
+        if not leads_existentes:
+            raise ValueError(f"Lead com ID {lead_id} não encontrado")
+        vendedor['leads'] = [lead for lead in vendedor['leads'] if lead['id'] != lead_id]
+        salvar_dados(dados)
+        return True
+    raise ValueError(f"Vendedor com ID {vendedor_id} não encontrado")
 
 # Função para obter todos os leads de um vendedor
 def obter_leads(dados, vendedor_id):
     vendedor = obter_vendedor(dados, vendedor_id)
     if vendedor:
         return vendedor['leads']
-    return []
+    raise ValueError(f"Vendedor com ID {vendedor_id} não encontrado")
 
 # Função para filtrar leads por data e status
 def filtrar_leads(dados, vendedor_id, inicio=None, fim=None, status=None):

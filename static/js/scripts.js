@@ -41,6 +41,7 @@ function atualizarGraficos(inicio = '', fim = '') {
         if (data.error) {
             alert(data.error);
         } else {
+            // Verifique se os dados estão disponíveis
             atualizarGraficoConversao(data);
             atualizarGraficoAberto(data);
             atualizarGraficoPerdido(data);
@@ -69,7 +70,11 @@ function atualizarGraficoConversao(data) {
             labels: ['Abertos', 'Convertidos', 'Perdidos'],
             datasets: [{
                 label: 'Leads',
-                data: [data.leads_abertos, data.leads_convertidos, data.leads_perdidos],
+                data: [
+                    data.leads_abertos ?? 0, 
+                    data.leads_convertidos ?? 0, 
+                    data.leads_perdidos ?? 0
+                ],
                 backgroundColor: ['#FFCE56', '#4CAF50', '#F7464A'],
                 borderColor: ['#FFCE56', '#4CAF50', '#F7464A'],
                 borderWidth: 1
@@ -111,7 +116,7 @@ function atualizarGraficoAberto(data) {
             labels: ['Leads em Aberto'],
             datasets: [{
                 label: 'Abertos',
-                data: [data.leads_abertos],
+                data: [data.leads_abertos ?? 0],
                 backgroundColor: '#FFCE56',
                 borderColor: '#FFCE56',
                 borderWidth: 1
@@ -143,7 +148,7 @@ function atualizarGraficoPerdido(data) {
             labels: ['Leads Perdidos'],
             datasets: [{
                 label: 'Perdidos',
-                data: [data.leads_perdidos],
+                data: [data.leads_perdidos ?? 0],
                 backgroundColor: '#F7464A',
                 borderColor: '#F7464A',
                 borderWidth: 1
@@ -172,7 +177,7 @@ function atualizarGraficoVariacao(data) {
     chartVariacao = new Chart(ctxVariacao, {
         type: 'line',
         data: {
-            labels: data.variacao_temporal.map(item => item.data),
+            labels: data.variacao_temporal.map(item => item.data || 'N/A'),
             datasets: [{
                 label: 'Status Temporal',
                 data: data.variacao_temporal.map(item => item.status === 'Convertido' ? 1 : (item.status === 'Aberto' ? 0.5 : 0)),
@@ -205,10 +210,10 @@ function atualizarGraficoRanking(data) {
     chartRanking = new Chart(ctxRanking, {
         type: 'bar',
         data: {
-            labels: data.ranking_vendedores.map(item => 'Vendedor ' + item.vendedor_id),
+            labels: data.ranking_vendedores.map(item => item.vendedor || 'Desconhecido'),
             datasets: [{
                 label: 'Leads Convertidos',
-                data: data.ranking_vendedores.map(item => item.convertidos),
+                data: data.ranking_vendedores.map(item => item.convertidos ?? 0),
                 backgroundColor: '#4CAF50',
                 borderColor: '#4CAF50',
                 borderWidth: 1
@@ -263,10 +268,10 @@ function atualizarGraficoComparativo(data) {
     chartComparativo = new Chart(ctxComparativo, {
         type: 'line',
         data: {
-            labels: data.comparativo_vendas.map(item => 'Vendedor ' + item.vendedor_id),
+            labels: data.comparativo_vendas.map(item => item.vendedor || 'Desconhecido'),
             datasets: [{
                 label: 'Leads Convertidos',
-                data: data.comparativo_vendas.map(item => item.convertidos),
+                data: data.comparativo_vendas.map(item => item.convertidos ?? 0),
                 backgroundColor: '#4CAF50',
                 borderColor: '#4CAF50',
                 fill: false,
