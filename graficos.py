@@ -36,6 +36,7 @@ def gerar_dados_graficos(vendedores_selecionados, inicio_str, fim_str):
         for vendedor_id in vendedores_selecionados:
             vendedor = obter_vendedor(dados, vendedor_id)  # Pegar o nome do vendedor
             if not vendedor:
+                print(f"Vendedor com ID {vendedor_id} não encontrado")  # Log de depuração
                 continue  # Se o vendedor não for encontrado, pula
 
             nome_vendedor = vendedor['nome'] if vendedor else 'Desconhecido'
@@ -43,6 +44,9 @@ def gerar_dados_graficos(vendedores_selecionados, inicio_str, fim_str):
             leads = obter_leads_por_periodo([vendedor_id], inicio_str, fim_str)
             if leads is None:
                 leads = []  # Prevenir erros caso não haja leads
+
+            # Log para verificar os leads retornados para cada vendedor
+            print(f"Leads para o vendedor {nome_vendedor} (ID {vendedor_id}): {leads}")
 
             # Filtrar leads com status não nulo
             leads_validos = [lead for lead in leads if lead.get('status')]
@@ -83,6 +87,8 @@ def gerar_dados_graficos(vendedores_selecionados, inicio_str, fim_str):
                 'convertidos': convertidos
             })
 
+        # Log para verificar os dados finais gerados para os gráficos
+        print(f"Dados gerados para gráficos: {dados_graficos}")
         return dados_graficos
 
     except Exception as e:
@@ -97,15 +103,21 @@ def filtrar_graficos():
         inicio_str = request.json.get('inicio')
         fim_str = request.json.get('fim')
 
-        # Verificar se há vendedores selecionados
+        # Logs para verificar os dados recebidos
+        print("Vendedores selecionados:", vendedores_selecionados)
+        print("Período de início:", inicio_str)
+        print("Período de fim:", fim_str)
+
         if not vendedores_selecionados:
             return jsonify({"error": "Nenhum vendedor selecionado"}), 400
 
-        # Filtra os leads de acordo com o período e os vendedores selecionados
         dados_graficos = gerar_dados_graficos(vendedores_selecionados, inicio_str, fim_str)
 
         if dados_graficos is None:
             return jsonify({"error": "Erro ao gerar os dados dos gráficos"}), 500
+
+        # Log para verificar os dados gerados para os gráficos
+        print("Dados gerados para os gráficos:", dados_graficos)
 
         return jsonify(dados_graficos)
 

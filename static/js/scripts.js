@@ -24,7 +24,6 @@ function filtrarPorTempo() {
 }
 
 function atualizarGraficos(inicio = '', fim = '') {
-    // Fazer a chamada ao backend para obter leads filtrados
     fetch('/grafico/filtrar', {
         method: 'POST',
         headers: {
@@ -38,10 +37,11 @@ function atualizarGraficos(inicio = '', fim = '') {
     })
     .then(response => response.json())
     .then(data => {
+        console.log("Dados recebidos do backend:", data);  // Adicionando log para depurar os dados recebidos
+
         if (data.error) {
             alert(data.error);
         } else {
-            // Verifique se os dados estão disponíveis
             atualizarGraficoConversao(data);
             atualizarGraficoAberto(data);
             atualizarGraficoPerdido(data);
@@ -53,6 +53,7 @@ function atualizarGraficos(inicio = '', fim = '') {
     })
     .catch(error => console.error('Erro ao atualizar os gráficos:', error));
 }
+
 
 // Funções para atualizar gráficos individuais
 

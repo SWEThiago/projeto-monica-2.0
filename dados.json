@@ -1,1 +1,176 @@
-[]
+[
+    {
+        "id": 1,
+        "nome": "Thiago 1",
+        "leads": [
+            {
+                "id": 1,
+                "data_lead": "2024-10-16",
+                "nome": "Monica",
+                "contato": "teste@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "compass",
+                "status": "Convertido",
+                "faturado": null,
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 2,
+                "data_lead": "2024-10-16",
+                "nome": "Monica",
+                "contato": "teste@gmail.com",
+                "veiculo": "Jeep",
+                "modelo": "gol",
+                "status": "Convertido",
+                "faturado": null,
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 3,
+                "data_lead": "2024-10-16",
+                "nome": "Thiago teste",
+                "contato": "teste@gmail.com",
+                "veiculo": "Citroen",
+                "modelo": "gol",
+                "status": "Convertido",
+                "faturado": null,
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 4,
+                "data_lead": "2024-10-16",
+                "nome": "Monica",
+                "contato": "teste@gmail.com",
+                "veiculo": "Peugeot",
+                "modelo": "gol",
+                "status": "Aberto",
+                "faturado": "Nao",
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 5,
+                "data_lead": "2024-10-16",
+                "nome": "Thiago teste",
+                "contato": "teste@gmail.com",
+                "veiculo": "Semi Novos",
+                "modelo": "gol",
+                "status": "Perdido",
+                "faturado": null,
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "nome": "Thiago 2",
+        "leads": [
+            {
+                "id": 1,
+                "data_lead": "2024-10-16",
+                "nome": "Thiago teste",
+                "contato": "teste@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "compass",
+                "status": "Convertido",
+                "faturado": null,
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 2,
+                "data_lead": "2024-10-16",
+                "nome": "Monica",
+                "contato": "teste@gmail.com",
+                "veiculo": "Jeep",
+                "modelo": "gol",
+                "status": "Convertido",
+                "faturado": null,
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 3,
+                "data_lead": "2024-10-16",
+                "nome": "Monica",
+                "contato": "teste@gmail.com",
+                "veiculo": "Citroen",
+                "modelo": "compass",
+                "status": "Convertido",
+                "faturado": null,
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 4,
+                "data_lead": "2024-10-16",
+                "nome": "Monica",
+                "contato": "teste@gmail.com",
+                "veiculo": "Peugeot",
+                "modelo": "compass",
+                "status": "Convertido",
+                "faturado": null,
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 5,
+                "data_lead": "2024-10-16",
+                "nome": "teste thiago",
+                "contato": "teste@gmail.com",
+                "veiculo": "Semi Novos",
+                "modelo": "2000",
+                "status": "Aberto",
+                "faturado": "Nao",
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "nome": "Thiago 3",
+        "leads": [
+            {
+                "id": 1,
+                "data_lead": "2024-10-16",
+                "nome": "Monica",
+                "contato": "teste@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "gol",
+                "status": "Perdido",
+                "faturado": null,
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 2,
+                "data_lead": "2024-10-16",
+                "nome": "Thiago teste",
+                "contato": "teste@gmail.com",
+                "veiculo": "Citroen",
+                "modelo": "compass",
+                "status": "Aberto",
+                "faturado": "Nao",
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 3,
+                "data_lead": "2024-10-16",
+                "nome": "Thiago teste",
+                "contato": "teste@gmail.com",
+                "veiculo": "Semi Novos",
+                "modelo": "compass",
+                "status": "Aberto",
+                "faturado": "Nao",
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            }
+        ]
+    }
+]
