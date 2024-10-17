@@ -62,10 +62,22 @@
             <h3 class="grafico-title">Gráfico de Leads Perdidos</h3>
             <canvas id="graficoPerdido"></canvas>
         </div>
-        <div class="grafico-box">
-            <h3 class="grafico-title">Variação Temporal de Performance</h3>
-            <canvas id="graficoVariacao"></canvas>
+        
+        <div>
+            <h3>Gráfico de Conversão ao longo do tempo</h3>
+            <canvas id="graficoConversaoTemporal"></canvas>
         </div>
+        
+        <div>
+            <h3>Gráfico de Leads Abertos ao longo do tempo</h3>
+            <canvas id="graficoAbertosTemporal"></canvas>
+        </div>
+        
+        <div>
+            <h3>Gráfico de Leads Perdidos ao longo do tempo</h3>
+            <canvas id="graficoPerdidosTemporal"></canvas>
+        </div>
+        
         <div class="grafico-box">
             <h3 class="grafico-title">Ranking de Vendedores por Conversão</h3>
             <canvas id="graficoRanking"></canvas>
@@ -85,4 +97,13 @@
 <!-- Certifique-se de que o caminho para o script está correto -->
 <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Garantir que o DOM esteja completamente carregado antes de executar os scripts
+    document.addEventListener('DOMContentLoaded', function() {
+        // Chama a função de atualização de gráficos aqui
+        atualizarGraficos();
+    });
+</script>
+
 {% endblock %}
