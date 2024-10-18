@@ -420,16 +420,19 @@ function atualizarGraficoComparativo(data) {
         chartComparativo.destroy();
     }
 
+    // Totalizar leads convertidos por período (diário, quinzenal ou mensal)
+    const labels = data.comparativo_vendas.map(item => item.periodo);
+    const totalLeadsConvertidos = data.comparativo_vendas.reduce((acc, item) => acc + item.leads_convertidos, 0);
+    
     chartComparativo = new Chart(ctxComparativo, {
         type: 'bar',
         data: {
-            labels: data.comparativo_vendas.map(item => item.vendedor || 'Desconhecido'),
+            labels: labels,  // Período (dias, quinzenas, meses)
             datasets: [{
                 label: 'Leads Convertidos',
-                data: data.comparativo_vendas.map(item => item.convertidos ?? 0),
+                data: data.comparativo_vendas.map(item => item.leads_convertidos),
                 backgroundColor: '#4CAF50',
                 borderColor: '#4CAF50',
-                fill: false,
                 borderWidth: 1
             }]
         },
@@ -437,9 +440,28 @@ function atualizarGraficoComparativo(data) {
             responsive: true,
             scales: {
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Leads Convertidos'
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            const totalLeads = data.comparativo_vendas[tooltipItem.dataIndex].total_leads;
+                            const leadsConvertidos = data.comparativo_vendas[tooltipItem.dataIndex].leads_convertidos;
+                            const percentual = data.comparativo_vendas[tooltipItem.dataIndex].percentual_conversao.toFixed(2);
+                            return `Leads Convertidos: ${leadsConvertidos}/${totalLeads} (${percentual}%)`;
+                        }
+                    }
                 }
             }
         }
     });
 }
+
+
+

@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from dados import carregar_dados, obter_todos_vendedores, obter_leads_por_periodo, obter_vendedor
-from datetime import datetime
+from datetime import datetime, timedelta
 
 grafico_bp = Blueprint('grafico', __name__)
 
@@ -12,12 +12,74 @@ def calcular_metricas_por_vendedor(leads):
     perdidos = sum(1 for lead in leads if lead.get('status') == 'Perdido')
     return abertos, convertidos, perdidos
 
+# Função para calcular porcentagens e dividir os períodos de tempo
+def calcular_comparativo_vendas(leads, inicio, fim):
+    comparativo_vendas = []
+    
+    if not leads:
+        return comparativo_vendas  # Retorna vazio se não houver leads
+
+    delta = fim - inicio
+
+    # Se o filtro for de até 7 dias, mostrar os resultados diários
+    if delta.days <= 7:
+        periodo_format = '%Y-%m-%d'
+        for i in range(7):
+            dia = inicio + timedelta(days=i)
+            leads_dia = [lead for lead in leads if lead.get('data_lead') == dia.strftime(periodo_format)]
+            total_dia = len(leads_dia)
+            convertidos_dia = sum(1 for lead in leads_dia if lead.get('status') == 'Convertido')
+            percentual_conversao = (convertidos_dia / total_dia) * 100 if total_dia > 0 else 100
+            comparativo_vendas.append({
+                'periodo': dia.strftime(periodo_format), 
+                'leads_convertidos': convertidos_dia, 
+                'percentual_conversao': percentual_conversao
+            })
+
+    # Se o filtro for de mais de 7 dias e até 2 meses, mostrar por quinzena
+    elif 7 < delta.days <= 60:
+        quinzena_inicio = inicio
+        while quinzena_inicio < fim:
+            quinzena_fim = min(quinzena_inicio + timedelta(days=14), fim)
+            leads_quinzena = [lead for lead in leads if quinzena_inicio <= datetime.strptime(lead.get('data_lead'), '%Y-%m-%d') < quinzena_fim]
+            total_quinzena = len(leads_quinzena)
+            convertidos_quinzena = sum(1 for lead in leads_quinzena if lead.get('status') == 'Convertido')
+            percentual_conversao = (convertidos_quinzena / total_quinzena) * 100 if total_quinzena > 0 else 100
+            comparativo_vendas.append({
+                'periodo': f'{quinzena_inicio.strftime("%Y-%m-%d")} - {quinzena_fim.strftime("%Y-%m-%d")}',
+                'leads_convertidos': convertidos_quinzena,
+                'percentual_conversao': percentual_conversao
+            })
+            quinzena_inicio = quinzena_fim
+
+    # Se o filtro for maior que 2 meses, mostrar os resultados mensais
+    else:
+        mes_inicio = inicio.replace(day=1)
+        while mes_inicio < fim:
+            proximo_mes = (mes_inicio.replace(day=28) + timedelta(days=4)).replace(day=1)
+            leads_mes = [lead for lead in leads if mes_inicio <= datetime.strptime(lead.get('data_lead'), '%Y-%m-%d') < proximo_mes]
+            total_mes = len(leads_mes)
+            convertidos_mes = sum(1 for lead in leads_mes if lead.get('status') == 'Convertido')
+            percentual_conversao = (convertidos_mes / total_mes) * 100 if total_mes > 0 else 100
+            comparativo_vendas.append({
+                'periodo': mes_inicio.strftime('%Y-%m'),
+                'leads_convertidos': convertidos_mes,
+                'percentual_conversao': percentual_conversao
+            })
+            mes_inicio = proximo_mes
+
+    return comparativo_vendas
+
 # Função para gerar dados para os gráficos com base nos vendedores e no período filtrado
-def gerar_dados_graficos(vendedores_selecionados, inicio_str, fim_str):
+def gerar_dados_graficos(vendedores_selecionados, inicio_str=None, fim_str=None):
     try:
-        # Converter as strings de data para objetos datetime (se existirem)
-        inicio = datetime.strptime(inicio_str, '%Y-%m-%d') if inicio_str else None
-        fim = datetime.strptime(fim_str, '%Y-%m-%d') if fim_str else None
+        # Se não houver datas, pegar todos os leads
+        if not inicio_str or not fim_str:
+            inicio = None
+            fim = None
+        else:
+            inicio = datetime.strptime(inicio_str, '%Y-%m-%d') if inicio_str else None
+            fim = datetime.strptime(fim_str, '%Y-%m-%d') if fim_str else None
         
         # Inicializar os dados dos gráficos
         dados_graficos = {
@@ -25,56 +87,49 @@ def gerar_dados_graficos(vendedores_selecionados, inicio_str, fim_str):
             'leads_abertos': 0,
             'leads_convertidos': 0,
             'leads_perdidos': 0,
-            'variacao_temporal': [],  # Adicionar campo para variação temporal
+            'variacao_temporal': [],
             'ranking_vendedores': [],
             'leads_por_veiculo': {},
             'comparativo_vendas': [],
-            'total_leads_vendedores': [],  # Para gráfico de taxa de conversão
-            'percentual_conversao_vendedores': [],  # Para gráfico de taxa de conversão
-            'percentual_abertos_vendedores': [],  # Para gráfico de leads abertos
-            'percentual_perdidos_vendedores': [],  # Para gráfico de leads perdidos
-            'vendedores': [],  # Nome dos vendedores
+            'total_leads_vendedores': [],
+            'percentual_conversao_vendedores': [],
+            'percentual_abertos_vendedores': [],
+            'percentual_perdidos_vendedores': [],
+            'vendedores': []
         }
 
-        dados = carregar_dados()  # Carregar dados uma vez para evitar carregar repetidamente
+        dados = carregar_dados()
+
+        all_leads = []
 
         for vendedor_id in vendedores_selecionados:
-            vendedor = obter_vendedor(dados, vendedor_id)  # Pegar o nome do vendedor
+            vendedor = obter_vendedor(dados, vendedor_id)
             if not vendedor:
-                continue  # Se o vendedor não for encontrado, pula
+                continue
 
             nome_vendedor = vendedor['nome'] if vendedor else 'Desconhecido'
             dados_graficos['vendedores'].append(nome_vendedor)
 
             leads = obter_leads_por_periodo([vendedor_id], inicio_str, fim_str)
             if leads is None:
-                leads = []  # Prevenir erros caso não haja leads
+                leads = []
 
-            # Filtrar leads com status não nulo
-            leads_validos = [lead for lead in leads if lead.get('status')]
+            all_leads.extend(leads)
 
-            abertos, convertidos, perdidos = calcular_metricas_por_vendedor(leads_validos)
+            abertos, convertidos, perdidos = calcular_metricas_por_vendedor(leads)
 
-            # Atualizar as métricas dos gráficos
-            dados_graficos['total_leads'] += len(leads_validos)
-            dados_graficos['leads_abertos'] += abertos
-            dados_graficos['leads_convertidos'] += convertidos
-            dados_graficos['leads_perdidos'] += perdidos
-
-            # Adicionar para taxa de conversão
-            total_leads = len(leads_validos)
+            total_leads = len(leads)
             dados_graficos['total_leads_vendedores'].append(total_leads)
             percentual_conversao = (convertidos / total_leads) * 100 if total_leads > 0 else 0
             percentual_abertos = (abertos / total_leads) * 100 if total_leads > 0 else 0
             percentual_perdidos = (perdidos / total_leads) * 100 if total_leads > 0 else 0
 
-            # Preencher os percentuais
             dados_graficos['percentual_conversao_vendedores'].append(percentual_conversao)
             dados_graficos['percentual_abertos_vendedores'].append(percentual_abertos)
             dados_graficos['percentual_perdidos_vendedores'].append(percentual_perdidos)
 
             # Leads por veículo
-            for lead in leads_validos:
+            for lead in leads:
                 veiculo = lead.get('veiculo', 'Desconhecido')
                 if veiculo in dados_graficos['leads_por_veiculo']:
                     dados_graficos['leads_por_veiculo'][veiculo] += 1
@@ -88,9 +143,9 @@ def gerar_dados_graficos(vendedores_selecionados, inicio_str, fim_str):
             })
 
             # Adicionar dados para variação temporal
-            for lead in leads_validos:
+            for lead in leads:
                 abertos, convertidos, perdidos = calcular_metricas_por_vendedor([lead])
-                total_leads = 1  # Um único lead
+                total_leads = 1
                 percentual_conversao = (convertidos / total_leads) * 100 if total_leads > 0 else 0
                 percentual_abertos = (abertos / total_leads) * 100 if total_leads > 0 else 0
                 percentual_perdidos = (perdidos / total_leads) * 100 if total_leads > 0 else 0
@@ -103,11 +158,10 @@ def gerar_dados_graficos(vendedores_selecionados, inicio_str, fim_str):
                     'perdidos': percentual_perdidos
                 })
 
-            # Adicionar dados para o comparativo de vendas entre vendedores
-            dados_graficos['comparativo_vendas'].append({
-                'vendedor': nome_vendedor,
-                'convertidos': convertidos
-            })
+        # Calcular comparativo de vendas para todos os leads agregados
+        if inicio and fim:
+            comparativo_vendas = calcular_comparativo_vendas(all_leads, inicio, fim)
+            dados_graficos['comparativo_vendas'].extend(comparativo_vendas)
 
         return dados_graficos
 
