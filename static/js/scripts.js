@@ -420,17 +420,17 @@ function atualizarGraficoComparativo(data) {
         chartComparativo.destroy();
     }
 
-    // Totalizar leads convertidos por período (diário, quinzenal ou mensal)
     const labels = data.comparativo_vendas.map(item => item.periodo);
-    const totalLeadsConvertidos = data.comparativo_vendas.reduce((acc, item) => acc + item.leads_convertidos, 0);
-    
+    const leadsConvertidos = data.comparativo_vendas.map(item => item.leads_convertidos);
+    const percentualVariacao = data.comparativo_vendas.map(item => item.percentual_conversao);
+
     chartComparativo = new Chart(ctxComparativo, {
         type: 'bar',
         data: {
-            labels: labels,  // Período (dias, quinzenas, meses)
+            labels: labels,
             datasets: [{
                 label: 'Leads Convertidos',
-                data: data.comparativo_vendas.map(item => item.leads_convertidos),
+                data: leadsConvertidos,
                 backgroundColor: '#4CAF50',
                 borderColor: '#4CAF50',
                 borderWidth: 1
@@ -451,10 +451,9 @@ function atualizarGraficoComparativo(data) {
                 tooltip: {
                     callbacks: {
                         label: function(tooltipItem) {
-                            const totalLeads = data.comparativo_vendas[tooltipItem.dataIndex].total_leads;
-                            const leadsConvertidos = data.comparativo_vendas[tooltipItem.dataIndex].leads_convertidos;
-                            const percentual = data.comparativo_vendas[tooltipItem.dataIndex].percentual_conversao.toFixed(2);
-                            return `Leads Convertidos: ${leadsConvertidos}/${totalLeads} (${percentual}%)`;
+                            const leads = leadsConvertidos[tooltipItem.dataIndex];
+                            const percentual = percentualVariacao[tooltipItem.dataIndex].toFixed(2);
+                            return `Leads Convertidos: ${leads} (${percentual}%)`;
                         }
                     }
                 }
@@ -462,6 +461,7 @@ function atualizarGraficoComparativo(data) {
         }
     });
 }
+
 
 
 

@@ -62,6 +62,18 @@
                 "faturado": null,
                 "cliente_faturado": "",
                 "nota_fiscal": ""
+            },
+            {
+                "id": 6,
+                "data_lead": "2024-10-21",
+                "nome": "Monica",
+                "contato": "teste@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "compass",
+                "status": "Convertido",
+                "faturado": null,
+                "cliente_faturado": "",
+                "nota_fiscal": ""
             }
         ]
     },
@@ -125,6 +137,30 @@
                 "veiculo": "Semi Novos",
                 "modelo": "Gol",
                 "status": "Perdido",
+                "faturado": null,
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 6,
+                "data_lead": "2024-10-21",
+                "nome": "Monica",
+                "contato": "teste@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "compass",
+                "status": "Convertido",
+                "faturado": null,
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 7,
+                "data_lead": "2024-10-21",
+                "nome": "Monica",
+                "contato": "teste@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "compass",
+                "status": "Convertido",
                 "faturado": null,
                 "cliente_faturado": "",
                 "nota_fiscal": ""
@@ -194,6 +230,18 @@
                 "faturado": null,
                 "cliente_faturado": "",
                 "nota_fiscal": ""
+            },
+            {
+                "id": 6,
+                "data_lead": "2024-10-21",
+                "nome": "Monica",
+                "contato": "teste@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "compass",
+                "status": "Convertido",
+                "faturado": null,
+                "cliente_faturado": "",
+                "nota_fiscal": ""
             }
         ]
     },
@@ -257,6 +305,30 @@
                 "veiculo": "Semi Novos",
                 "modelo": "Gol",
                 "status": "Perdido",
+                "faturado": null,
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 6,
+                "data_lead": "2024-10-21",
+                "nome": "Monica",
+                "contato": "teste@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "gol",
+                "status": "Convertido",
+                "faturado": null,
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 7,
+                "data_lead": "2024-10-21",
+                "nome": "Thiago teste",
+                "contato": "teste@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "gol",
+                "status": "Convertido",
                 "faturado": null,
                 "cliente_faturado": "",
                 "nota_fiscal": ""

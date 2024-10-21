@@ -12,7 +12,7 @@ def calcular_metricas_por_vendedor(leads):
     perdidos = sum(1 for lead in leads if lead.get('status') == 'Perdido')
     return abertos, convertidos, perdidos
 
-# Função para calcular porcentagens e dividir os períodos de tempo
+# Função para calcular o comparativo de vendas com leads convertidos ao longo do tempo
 def calcular_comparativo_vendas(leads, inicio, fim):
     comparativo_vendas = []
     
@@ -20,53 +20,34 @@ def calcular_comparativo_vendas(leads, inicio, fim):
         return comparativo_vendas  # Retorna vazio se não houver leads
 
     delta = fim - inicio
+    total_leads = len(leads)
 
-    # Se o filtro for de até 7 dias, mostrar os resultados diários
-    if delta.days <= 7:
-        periodo_format = '%Y-%m-%d'
-        for i in range(7):
-            dia = inicio + timedelta(days=i)
-            leads_dia = [lead for lead in leads if lead.get('data_lead') == dia.strftime(periodo_format)]
-            total_dia = len(leads_dia)
-            convertidos_dia = sum(1 for lead in leads_dia if lead.get('status') == 'Convertido')
-            percentual_conversao = (convertidos_dia / total_dia) * 100 if total_dia > 0 else 100
-            comparativo_vendas.append({
-                'periodo': dia.strftime(periodo_format), 
-                'leads_convertidos': convertidos_dia, 
-                'percentual_conversao': percentual_conversao
-            })
+    # Processar mensalmente para intervalo maior que 2 meses
+    mes_inicio = inicio.replace(day=1)
 
-    # Se o filtro for de mais de 7 dias e até 2 meses, mostrar por quinzena
-    elif 7 < delta.days <= 60:
-        quinzena_inicio = inicio
-        while quinzena_inicio < fim:
-            quinzena_fim = min(quinzena_inicio + timedelta(days=14), fim)
-            leads_quinzena = [lead for lead in leads if quinzena_inicio <= datetime.strptime(lead.get('data_lead'), '%Y-%m-%d') < quinzena_fim]
-            total_quinzena = len(leads_quinzena)
-            convertidos_quinzena = sum(1 for lead in leads_quinzena if lead.get('status') == 'Convertido')
-            percentual_conversao = (convertidos_quinzena / total_quinzena) * 100 if total_quinzena > 0 else 100
-            comparativo_vendas.append({
-                'periodo': f'{quinzena_inicio.strftime("%Y-%m-%d")} - {quinzena_fim.strftime("%Y-%m-%d")}',
-                'leads_convertidos': convertidos_quinzena,
-                'percentual_conversao': percentual_conversao
-            })
-            quinzena_inicio = quinzena_fim
+    # Variável para capturar o primeiro mês como referência
+    leads_primeiro_mes = 0
 
-    # Se o filtro for maior que 2 meses, mostrar os resultados mensais
-    else:
-        mes_inicio = inicio.replace(day=1)
-        while mes_inicio < fim:
-            proximo_mes = (mes_inicio.replace(day=28) + timedelta(days=4)).replace(day=1)
-            leads_mes = [lead for lead in leads if mes_inicio <= datetime.strptime(lead.get('data_lead'), '%Y-%m-%d') < proximo_mes]
-            total_mes = len(leads_mes)
-            convertidos_mes = sum(1 for lead in leads_mes if lead.get('status') == 'Convertido')
-            percentual_conversao = (convertidos_mes / total_mes) * 100 if total_mes > 0 else 100
-            comparativo_vendas.append({
-                'periodo': mes_inicio.strftime('%Y-%m'),
-                'leads_convertidos': convertidos_mes,
-                'percentual_conversao': percentual_conversao
-            })
-            mes_inicio = proximo_mes
+    while mes_inicio < fim:
+        proximo_mes = (mes_inicio.replace(day=28) + timedelta(days=4)).replace(day=1)
+        leads_mes = [lead for lead in leads if mes_inicio <= datetime.strptime(lead.get('data_lead'), '%Y-%m-%d') < proximo_mes]
+        total_mes = len(leads_mes)
+        convertidos_mes = sum(1 for lead in leads_mes if lead.get('status') == 'Convertido')
+
+        # Definir o primeiro mês como referência
+        if not leads_primeiro_mes and total_mes > 0:
+            leads_primeiro_mes = convertidos_mes
+
+        # Calcular a variação percentual com base no primeiro mês
+        percentual_variacao = ((convertidos_mes - leads_primeiro_mes) / leads_primeiro_mes) * 100 if leads_primeiro_mes > 0 else 0
+
+        comparativo_vendas.append({
+            'periodo': mes_inicio.strftime('%Y-%m'),
+            'leads_convertidos': convertidos_mes,
+            'total_leads': total_mes,
+            'percentual_conversao': percentual_variacao
+        })
+        mes_inicio = proximo_mes
 
     return comparativo_vendas
 
@@ -141,22 +122,6 @@ def gerar_dados_graficos(vendedores_selecionados, inicio_str=None, fim_str=None)
                 'vendedor': nome_vendedor,
                 'convertidos': convertidos
             })
-
-            # Adicionar dados para variação temporal
-            for lead in leads:
-                abertos, convertidos, perdidos = calcular_metricas_por_vendedor([lead])
-                total_leads = 1
-                percentual_conversao = (convertidos / total_leads) * 100 if total_leads > 0 else 0
-                percentual_abertos = (abertos / total_leads) * 100 if total_leads > 0 else 0
-                percentual_perdidos = (perdidos / total_leads) * 100 if total_leads > 0 else 0
-
-                dados_graficos['variacao_temporal'].append({
-                    'vendedor': nome_vendedor,
-                    'data': lead['data_lead'],
-                    'conversao': percentual_conversao,
-                    'abertos': percentual_abertos,
-                    'perdidos': percentual_perdidos
-                })
 
         # Calcular comparativo de vendas para todos os leads agregados
         if inicio and fim:
