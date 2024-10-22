@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+
 {% block content %}
 <div class="index-layout">
     <!-- Título principal da página -->
@@ -63,17 +64,17 @@
             <canvas id="graficoPerdido"></canvas>
         </div>
         
-        <div>
+        <div class="grafico-box">
             <h3>Gráfico de Conversão ao longo do tempo</h3>
             <canvas id="graficoConversaoTemporal"></canvas>
         </div>
         
-        <div>
+        <div class="grafico-box">
             <h3>Gráfico de Leads Abertos ao longo do tempo</h3>
             <canvas id="graficoAbertosTemporal"></canvas>
         </div>
         
-        <div>
+        <div class="grafico-box">
             <h3>Gráfico de Leads Perdidos ao longo do tempo</h3>
             <canvas id="graficoPerdidosTemporal"></canvas>
         </div>
@@ -94,15 +95,29 @@
 </div>
 
 <!-- Inclusão dos scripts JavaScript -->
-<!-- Certifique-se de que o caminho para o script está correto -->
 <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/graficos_temporais.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    // Garantir que o DOM esteja completamente carregado antes de executar os scripts
     document.addEventListener('DOMContentLoaded', function() {
-        // Chama a função de atualização de gráficos aqui
-        atualizarGraficos();
+        // Função para pegar os vendedores selecionados
+        const vendedoresSelecionados = () => {
+            const checkboxes = document.querySelectorAll('input[name="vendedores"]:checked');
+            return Array.from(checkboxes).map(checkbox => checkbox.value);
+        };
+
+        // Função para filtrar por período e atualizar gráficos
+        function filtrarPorTempo() {
+            const inicio = document.getElementById('inicio').value;
+            const fim = document.getElementById('fim').value;
+
+            atualizarGraficosTemporais(inicio, fim, vendedoresSelecionados());
+        }
+
+        // Chama a atualização dos gráficos quando a página carrega
+        atualizarGraficos(); // Atualizar gráficos gerais
+        atualizarGraficosTemporais(); // Atualizar gráficos temporais
     });
 </script>
 

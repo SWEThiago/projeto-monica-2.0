@@ -3,6 +3,7 @@ from settings import get_config
 from dados import carregar_dados, salvar_dados, adicionar_vendedor, remover_vendedor, obter_vendedor
 from graficos import calcular_metricas_por_vendedor, gerar_dados_graficos
 from graficos import grafico_bp  # Importando o blueprint dos gráficos
+from graficos_temporais import grafico_temporal_bp  # Importando o blueprint dos gráficos temporais
 from datetime import datetime
 
 # Criação da aplicação Flask
@@ -13,6 +14,9 @@ app.config.from_object(get_config())
 
 # Registrar blueprint de gráficos
 app.register_blueprint(grafico_bp)
+
+# Registrar blueprint dos gráficos temporais
+app.register_blueprint(grafico_temporal_bp)
 
 # Rota inicial - Página principal
 @app.route('/')
