@@ -65,7 +65,12 @@ def detalhes_vendedor(vendedor_id):
         if (not inicio or datetime.strptime(lead['data_lead'], '%Y-%m-%d') >= inicio) and
            (not fim or datetime.strptime(lead['data_lead'], '%Y-%m-%d') <= fim)
     ]
-    leads_filtrados.sort(key=lambda lead: datetime.strptime(lead['data_lead'], '%Y-%m-%d'), reverse=True)
+
+    # Converter data_lead para datetime
+    for lead in leads_filtrados:
+        lead['data_lead'] = datetime.strptime(lead['data_lead'], '%Y-%m-%d')
+
+    leads_filtrados.sort(key=lambda lead: lead['data_lead'], reverse=True)
 
     total_leads = len(leads_filtrados)
     aberto, convertido, perdido = calcular_metricas_por_vendedor(leads_filtrados)
@@ -123,7 +128,7 @@ def atualizar_lead(vendedor_id):
                 if lead['id'] == lead_id:
                     lead['status'] = request.form.get(f'status_{lead_id}')
                     lead['faturado'] = request.form.get(f'faturado_{lead_id}')
-                    lead['cliente_faturado'] = request.form.get(f'cliente_faturado_{lead_id}', '') if request.form.get(f'faturado_{lead_id}') == 'Sim' else ''
+                    lead['cliente_faturado'] = request.form.get(f'cliente_faturado_{lead_id}', '')
                     lead['nota_fiscal'] = request.form.get(f'nota_fiscal_{lead_id}', '')
                     salvar_dados(dados)
                     return redirect(url_for('detalhes_vendedor', vendedor_id=vendedor_id))

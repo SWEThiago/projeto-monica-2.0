@@ -6,15 +6,16 @@
 
     <div class="leads-info">
         <p>Total de Leads: {{ total_leads }}</p>
-        <p>Leads Abertos: {{ quantidade_aberto }}</p>
-        <p>Leads Convertidos: {{ quantidade_convertido }}</p>
-        <p>Leads Perdidos: {{ quantidade_perdido }}</p>
+        <p>Leads Abertos: {{ quantidade_aberto }} ({{ (quantidade_aberto / total_leads) * 100 if total_leads > 0 else 0 }}%)</p>
+        <p>Leads Convertidos: {{ quantidade_convertido }} ({{ (quantidade_convertido / total_leads) * 100 if total_leads > 0 else 0 }}%)</p>
+        <p>Leads Perdidos: {{ quantidade_perdido }} ({{ (quantidade_perdido / total_leads) * 100 if total_leads > 0 else 0 }}%)</p>
     </div>
 
     <h3>Leads Atribuídos</h3>
     <table class="table-leads">
         <thead>
             <tr>
+                <th>Data do Lead</th>
                 <th>Nome do Lead</th>
                 <th>Veículo</th>
                 <th>Modelo</th>
@@ -28,32 +29,35 @@
         <tbody>
             {% for lead in leads %}
             <tr>
-                <td>{{ lead.nome }}</td>
-                <td>{{ lead.veiculo }}</td>
-                <td>{{ lead.modelo }}</td>
-                <td>
-                    <form method="POST" action="{{ url_for('atualizar_lead', vendedor_id=vendedor.id) }}">
-                        <input type="hidden" name="lead_id" value="{{ lead.id }}">
+                <form method="POST" action="{{ url_for('atualizar_lead', vendedor_id=vendedor.id) }}">
+                    <input type="hidden" name="lead_id" value="{{ lead.id }}">
+                    <td>{{ lead.data_lead.strftime('%d/%m/%y') }}</td>
+                    <td>{{ lead.nome }}</td>
+                    <td>{{ lead.veiculo }}</td>
+                    <td>{{ lead.modelo }}</td>
+                    <td>
                         <select name="status_{{ lead.id }}">
                             <option value="Aberto" {% if lead.status == 'Aberto' %}selected{% endif %}>Aberto</option>
                             <option value="Convertido" {% if lead.status == 'Convertido' %}selected{% endif %}>Convertido</option>
                             <option value="Perdido" {% if lead.status == 'Perdido' %}selected{% endif %}>Perdido</option>
                         </select>
-                        <button type="submit">Salvar</button>
-                    </form>
-                </td>
-                <td>
-                    <form method="POST" action="{{ url_for('atualizar_lead', vendedor_id=vendedor.id) }}">
-                        <input type="hidden" name="lead_id" value="{{ lead.id }}">
+                    </td>
+                    <td>
                         <select name="faturado_{{ lead.id }}">
                             <option value="Sim" {% if lead.faturado == 'Sim' %}selected{% endif %}>Sim</option>
                             <option value="Nao" {% if lead.faturado == 'Nao' %}selected{% endif %}>Não</option>
                         </select>
-                        <button type="submit">Salvar</button>
-                    </form>
-                </td>
-                <td>{{ lead.cliente_faturado }}</td>
-                <td>{{ lead.nota_fiscal }}</td>
+                    </td>
+                    <td>
+                        <input type="text" name="cliente_faturado_{{ lead.id }}" value="{{ lead.cliente_faturado }}" placeholder="Nome do Cliente">
+                    </td>
+                    <td>
+                        <input type="text" name="nota_fiscal_{{ lead.id }}" value="{{ lead.nota_fiscal }}" placeholder="Nota Fiscal">
+                    </td>
+                    <td>
+                        <button type="submit" class="botao-salvar">Salvar</button>
+                    </td>
+                </form>
                 <td>
                     <form method="POST" action="{{ url_for('remover_lead', vendedor_id=vendedor.id, lead_id=lead.id) }}">
                         <button type="submit" class="botao-remover">Remover</button>
@@ -62,7 +66,7 @@
             </tr>
             {% else %}
             <tr>
-                <td colspan="8">Nenhum lead encontrado.</td>
+                <td colspan="9">Nenhum lead encontrado.</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -75,9 +79,10 @@
 </div>
 
 <script>
-    // Exemplo de script para gerar o gráfico de desempenho do vendedor (usando Chart.js)
     document.addEventListener('DOMContentLoaded', function () {
+        const totalLeads = {{ total_leads }};
         const ctx = document.getElementById('graficoPerformanceVendedor').getContext('2d');
+
         new Chart(ctx, {
             type: 'bar',
             data: {
@@ -92,6 +97,17 @@
             },
             options: {
                 responsive: true,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                const valor = tooltipItem.raw;
+                                const porcentagem = (valor / totalLeads * 100).toFixed(2);
+                                return `${valor} Leads (${porcentagem}%)`;
+                            }
+                        }
+                    }
+                },
                 scales: {
                     x: {
                         title: {
