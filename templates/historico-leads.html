@@ -26,27 +26,58 @@
         <h3>Evolução dos Leads</h3>
         <canvas id="graficoEvolucaoLeads"></canvas>
     </div>
+
+    <!-- Botão para download do banco de dados -->
+    <div class="download-container">
+        <h3>Baixar Banco de Dados</h3>
+        <button type="button" onclick="mostrarModalSenha()">Baixar Arquivo JSON</button>
+    </div>
+
+    <!-- Modal de senha -->
+    <div id="modalSenha" style="display:none;">
+        <h3>Insira a Senha</h3>
+        <input type="password" id="senha" placeholder="Digite a senha">
+        <button type="button" onclick="verificarSenha()">Enviar</button>
+    </div>
 </div>
 
 <script>
-    // Script de exemplo para manipulação do gráfico (Chart.js)
+    let chartInstance;
+
+    // Função para filtrar e atualizar o gráfico com base nas datas
     function filtrarPorTempo() {
         const inicio = document.getElementById('inicio').value;
         const fim = document.getElementById('fim').value;
-        // Aqui você pode fazer a chamada ao backend ou filtrar os dados conforme necessário
-        atualizarGraficoLeads(inicio, fim);
+
+        fetch('/filtrar_leads', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ inicio: inicio, fim: fim })
+        })
+        .then(response => response.json())
+        .then(data => {
+            atualizarGraficoLeads(data.labels, data.leads);
+        })
+        .catch(error => console.error('Erro ao filtrar leads:', error));
     }
 
-    function atualizarGraficoLeads(inicio, fim) {
+    // Função para atualizar o gráfico com os dados recebidos
+    function atualizarGraficoLeads(labels, leads) {
         const ctx = document.getElementById('graficoEvolucaoLeads').getContext('2d');
-        // Exemplo de criação de gráfico (os dados reais virão do backend)
-        new Chart(ctx, {
+
+        if (chartInstance) {
+            chartInstance.destroy(); // Destroi o gráfico anterior, se existir
+        }
+
+        chartInstance = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio'],
+                labels: labels,
                 datasets: [{
                     label: 'Leads Gerados',
-                    data: [12, 19, 3, 5, 2],
+                    data: leads,
                     borderColor: '#4CAF50',
                     fill: false,
                     tension: 0.1
@@ -73,9 +104,37 @@
         });
     }
 
-    // Exemplo de carregamento inicial do gráfico (sem filtro)
+    // Carregar gráfico inicial (sem filtro)
     document.addEventListener('DOMContentLoaded', function () {
-        atualizarGraficoLeads('', '');
+        atualizarGraficoLeads([], []); // Exibe o gráfico vazio ao carregar a página
     });
+
+    // Função para mostrar o modal de senha
+    function mostrarModalSenha() {
+        document.getElementById('modalSenha').style.display = 'block';
+    }
+
+    // Função para verificar a senha e baixar o arquivo se a senha estiver correta
+    function verificarSenha() {
+        const senha = document.getElementById('senha').value;
+
+        fetch('/verificar_senha', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ senha: senha })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.autorizado) {
+                window.location.href = '/baixar_banco_dados';
+            } else {
+                alert('Senha incorreta!');
+            }
+        })
+        .catch(error => console.error('Erro ao verificar senha:', error));
+    }
 </script>
+
 {% endblock %}

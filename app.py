@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify, send_file
 from settings import get_config
 from dados import carregar_dados, salvar_dados, adicionar_vendedor, remover_vendedor, obter_vendedor
 from graficos import calcular_metricas_por_vendedor, gerar_dados_graficos
@@ -126,10 +126,10 @@ def atualizar_lead(vendedor_id):
             lead_id = int(request.form.get('lead_id'))
             for lead in vendedor['leads']:
                 if lead['id'] == lead_id:
-                    lead['status'] = request.form.get('status')
-                    lead['faturado'] = request.form.get('faturado')
-                    lead['cliente_faturado'] = request.form.get('cliente_faturado', '')
-                    lead['nota_fiscal'] = request.form.get('nota_fiscal', '')
+                    lead['status'] = request.form.get(f'status_{lead_id}')
+                    lead['faturado'] = request.form.get(f'faturado_{lead_id}')
+                    lead['cliente_faturado'] = request.form.get(f'cliente_faturado_{lead_id}', '')
+                    lead['nota_fiscal'] = request.form.get(f'nota_fiscal_{lead_id}', '')
                     salvar_dados(dados)
                     return redirect(url_for('detalhes_vendedor', vendedor_id=vendedor_id))
         except (KeyError, ValueError):
@@ -196,19 +196,47 @@ def desempenho_temporal(vendedor_id):
     return jsonify(dados_grafico)
 
 # Rota para gerar gráficos filtrados
-@app.route('/filtrar_dados', methods=['POST'])
-def filtrar_dados():
+@app.route('/filtrar_leads', methods=['POST'])
+def filtrar_leads():
     dados = carregar_dados()
-    vendedores_selecionados = request.json.get('vendedores', [])
-    inicio_str = request.json.get('inicio')
-    fim_str = request.json.get('fim')
+    req = request.json
+    inicio_str = req.get('inicio')
+    fim_str = req.get('fim')
 
     inicio = datetime.strptime(inicio_str, '%Y-%m-%d') if inicio_str else None
     fim = datetime.strptime(fim_str, '%Y-%m-%d') if fim_str else None
 
-    dados_filtrados = gerar_dados_graficos(vendedores_selecionados, inicio, fim)
+    # Filtrar os leads pelo período e agrupar por mês
+    leads_filtrados_por_mes = {}
+    for vendedor in dados:
+        for lead in vendedor['leads']:
+            data_lead = datetime.strptime(lead['data_lead'], '%Y-%m-%d')
+            if (not inicio or data_lead >= inicio) and (not fim or data_lead <= fim):
+                mes = data_lead.strftime('%Y-%m')
+                if mes not in leads_filtrados_por_mes:
+                    leads_filtrados_por_mes[mes] = 0
+                leads_filtrados_por_mes[mes] += 1
 
-    return jsonify(dados_filtrados)
+    # Organizar os dados para o gráfico
+    labels = sorted(leads_filtrados_por_mes.keys())
+    leads_por_mes = [leads_filtrados_por_mes[mes] for mes in labels]
+
+    return jsonify({'labels': labels, 'leads': leads_por_mes})
+
+# Rota para verificar senha antes do download
+@app.route('/verificar_senha', methods=['POST'])
+def verificar_senha():
+    req = request.json
+    senha = req.get('senha')
+    
+    if senha == 'senha_secreta':  # Substitua pela senha correta
+        return jsonify({'autorizado': True})
+    return jsonify({'autorizado': False})
+
+# Rota para download do arquivo JSON
+@app.route('/baixar_banco_dados')
+def baixar_banco_dados():
+    return send_file('dados.json', as_attachment=True)
 
 # Rota para o histórico de leads
 @app.route('/historico_leads', methods=['GET'])
