@@ -96,12 +96,13 @@ def leads():
         vendedor = obter_vendedor(dados, vendedor_id)
         if not vendedor:
             return "Erro: Vendedor não encontrado", 400
-        
+
+        # Inclui o campo de email ao adicionar o lead
         novo_lead = {
             'id': len(vendedor['leads']) + 1,
             'data_lead': datetime.now().strftime('%Y-%m-%d'),
             'nome': request.form['nome'],
-            'contato': request.form['contato'],
+            'contato': request.form['contato'],  # Certifique-se de que 'contato' seja o email
             'veiculo': request.form['veiculo'],
             'modelo': request.form['modelo'],
             'status': 'Aberto',
@@ -115,7 +116,7 @@ def leads():
 
     return render_template('leads.html', vendedores=dados)
 
-# Rota para atualizar um lead
+
 @app.route('/vendedores/<int:vendedor_id>/atualizar_lead', methods=['POST'])
 def atualizar_lead(vendedor_id):
     dados = carregar_dados()
@@ -126,10 +127,11 @@ def atualizar_lead(vendedor_id):
             lead_id = int(request.form.get('lead_id'))
             for lead in vendedor['leads']:
                 if lead['id'] == lead_id:
-                    lead['status'] = request.form.get(f'status_{lead_id}')
-                    lead['faturado'] = request.form.get(f'faturado_{lead_id}')
-                    lead['cliente_faturado'] = request.form.get(f'cliente_faturado_{lead_id}', '')
-                    lead['nota_fiscal'] = request.form.get(f'nota_fiscal_{lead_id}', '')
+                    lead['status'] = request.form.get(f'status')
+                    lead['faturado'] = request.form.get(f'faturado')
+                    lead['cliente_faturado'] = request.form.get(f'cliente_faturado', '')
+                    lead['nota_fiscal'] = request.form.get(f'nota_fiscal', '')
+                    lead['contato'] = request.form.get(f'contato', lead['contato'])  # Corrigido para 'contato' e manter o valor existente
                     salvar_dados(dados)
                     return redirect(url_for('detalhes_vendedor', vendedor_id=vendedor_id))
         except (KeyError, ValueError):
@@ -229,7 +231,7 @@ def verificar_senha():
     req = request.json
     senha = req.get('senha')
     
-    if senha == 'senha_secreta':  # Substitua pela senha correta
+    if senha == '5142233':  # Substitua pela senha correta
         return jsonify({'autorizado': True})
     return jsonify({'autorizado': False})
 

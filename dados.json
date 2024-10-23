@@ -7,49 +7,49 @@
                 "id": 2,
                 "data_lead": "2024-05-12",
                 "nome": "Cliente 2",
-                "contato": "cliente2@gmail.com",
+                "contato": "",
                 "veiculo": "Jeep",
                 "modelo": "Renegade",
                 "status": "Convertido",
-                "faturado": null,
+                "faturado": "Sim",
                 "cliente_faturado": "",
-                "nota_fiscal": ""
+                "nota_fiscal": "ssssss"
             },
             {
                 "id": 3,
                 "data_lead": "2024-06-14",
                 "nome": "Cliente 3",
-                "contato": "cliente3@gmail.com",
+                "contato": "",
                 "veiculo": "Citroen",
                 "modelo": "C4",
                 "status": "Convertido",
-                "faturado": null,
+                "faturado": "Sim",
                 "cliente_faturado": "",
-                "nota_fiscal": ""
+                "nota_fiscal": "65666"
             },
             {
                 "id": 4,
                 "data_lead": "2024-07-16",
                 "nome": "Cliente 4",
-                "contato": "cliente4@gmail.com",
+                "contato": "boa@gmail.com",
                 "veiculo": "Peugeot",
                 "modelo": "208",
-                "status": "Aberto",
+                "status": "Convertido",
                 "faturado": "Nao",
                 "cliente_faturado": "",
-                "nota_fiscal": ""
+                "nota_fiscal": "1111"
             },
             {
                 "id": 5,
                 "data_lead": "2024-08-18",
                 "nome": "Cliente 5",
-                "contato": "cliente5@gmail.com",
+                "contato": "cliente5555@gmail.com",
                 "veiculo": "Semi Novos",
                 "modelo": "Gol",
                 "status": "Perdido",
-                "faturado": null,
+                "faturado": "Sim",
                 "cliente_faturado": "",
-                "nota_fiscal": ""
+                "nota_fiscal": "2222"
             },
             {
                 "id": 6,
@@ -64,18 +64,6 @@
                 "nota_fiscal": ""
             },
             {
-                "id": 7,
-                "data_lead": "2024-10-23",
-                "nome": "Monica",
-                "contato": "teste@gmail.com",
-                "veiculo": "Ram",
-                "modelo": "compass",
-                "status": null,
-                "faturado": null,
-                "cliente_faturado": "",
-                "nota_fiscal": ""
-            },
-            {
                 "id": 8,
                 "data_lead": "2024-10-23",
                 "nome": "Thiago teste",
@@ -83,21 +71,21 @@
                 "veiculo": "Ram",
                 "modelo": "compass",
                 "status": "Convertido",
-                "faturado": "Nao",
-                "cliente_faturado": "",
-                "nota_fiscal": ""
+                "faturado": "Sim",
+                "cliente_faturado": "sssss",
+                "nota_fiscal": "ssssss"
             },
             {
                 "id": 9,
                 "data_lead": "2024-10-23",
                 "nome": "Monica",
-                "contato": "teste@gmail.com",
+                "contato": "",
                 "veiculo": "Ram",
                 "modelo": "compass",
                 "status": "Perdido",
                 "faturado": "Nao",
-                "cliente_faturado": "",
-                "nota_fiscal": ""
+                "cliente_faturado": "kjkjk65656",
+                "nota_fiscal": "65666"
             },
             {
                 "id": 10,
@@ -115,13 +103,13 @@
                 "id": 11,
                 "data_lead": "2024-10-23",
                 "nome": "Monica",
-                "contato": "teste@gmail.com",
+                "contato": "",
                 "veiculo": "Ram",
                 "modelo": "compass",
                 "status": "Aberto",
                 "faturado": "Nao",
                 "cliente_faturado": "",
-                "nota_fiscal": ""
+                "nota_fiscal": "teste"
             },
             {
                 "id": 11,
@@ -130,6 +118,18 @@
                 "contato": "teste@gmail.com",
                 "veiculo": "Ram",
                 "modelo": "oioioio",
+                "status": "Aberto",
+                "faturado": "Nao",
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 11,
+                "data_lead": "2024-10-23",
+                "nome": "Monica teste",
+                "contato": "boa@gmail.com",
+                "veiculo": "Citroen",
+                "modelo": "gol",
                 "status": "Aberto",
                 "faturado": "Nao",
                 "cliente_faturado": "",
@@ -352,6 +352,36 @@
                 "contato": "teste@gmail.com",
                 "veiculo": "Ram",
                 "modelo": "compass",
+                "status": "Aberto",
+                "faturado": "Nao",
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "nome": "Thiago 3",
+        "leads": [
+            {
+                "id": 1,
+                "data_lead": "2024-10-23",
+                "nome": "Monica",
+                "contato": "teste@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "compass",
+                "status": "Aberto",
+                "faturado": "Nao",
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 2,
+                "data_lead": "2024-10-23",
+                "nome": "Thiago teste",
+                "contato": "teste@gmail.com",
+                "veiculo": "Citroen",
+                "modelo": "gol",
                 "status": "Aberto",
                 "faturado": "Nao",
                 "cliente_faturado": "",
