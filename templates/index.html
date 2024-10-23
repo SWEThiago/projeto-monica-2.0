@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
 <div class="index-layout">
     <!-- Título principal da página -->
@@ -63,22 +62,6 @@
             <h3 class="grafico-title">Gráfico de Leads Perdidos</h3>
             <canvas id="graficoPerdido"></canvas>
         </div>
-        
-        <div class="grafico-box">
-            <h3>Gráfico de Conversão ao longo do tempo</h3>
-            <canvas id="graficoConversaoTemporal"></canvas>
-        </div>
-        
-        <div class="grafico-box">
-            <h3>Gráfico de Leads Abertos ao longo do tempo</h3>
-            <canvas id="graficoAbertosTemporal"></canvas>
-        </div>
-        
-        <div class="grafico-box">
-            <h3>Gráfico de Leads Perdidos ao longo do tempo</h3>
-            <canvas id="graficoPerdidosTemporal"></canvas>
-        </div>
-        
         <div class="grafico-box">
             <h3 class="grafico-title">Ranking de Vendedores por Conversão</h3>
             <canvas id="graficoRanking"></canvas>
@@ -96,7 +79,6 @@
 
 <!-- Inclusão dos scripts JavaScript -->
 <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
-<script src="{{ url_for('static', filename='js/graficos_temporais.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
@@ -112,12 +94,11 @@
             const inicio = document.getElementById('inicio').value;
             const fim = document.getElementById('fim').value;
 
-            atualizarGraficosTemporais(inicio, fim, vendedoresSelecionados());
+            atualizarGraficos(inicio, fim);
         }
 
         // Chama a atualização dos gráficos quando a página carrega
         atualizarGraficos(); // Atualizar gráficos gerais
-        atualizarGraficosTemporais(); // Atualizar gráficos temporais
     });
 </script>
 

@@ -250,30 +250,6 @@
         "nome": "Vendedor 4",
         "leads": [
             {
-                "id": 1,
-                "data_lead": "2024-04-10",
-                "nome": "Cliente 16",
-                "contato": "cliente16@gmail.com",
-                "veiculo": "Ram",
-                "modelo": "Compass",
-                "status": "Convertido",
-                "faturado": null,
-                "cliente_faturado": "",
-                "nota_fiscal": ""
-            },
-            {
-                "id": 2,
-                "data_lead": "2024-05-12",
-                "nome": "Cliente 17",
-                "contato": "cliente17@gmail.com",
-                "veiculo": "Jeep",
-                "modelo": "Renegade",
-                "status": "Convertido",
-                "faturado": null,
-                "cliente_faturado": "",
-                "nota_fiscal": ""
-            },
-            {
                 "id": 3,
                 "data_lead": "2024-06-14",
                 "nome": "Cliente 18",
