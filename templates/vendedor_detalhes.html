@@ -6,9 +6,9 @@
 
     <div class="leads-info">
         <p>Total de Leads: {{ total_leads }}</p>
-        <p>Leads Abertos: {{ quantidade_aberto }} ({{ (quantidade_aberto / total_leads) * 100 if total_leads > 0 else 0 }}%)</p>
-        <p>Leads Convertidos: {{ quantidade_convertido }} ({{ (quantidade_convertido / total_leads) * 100 if total_leads > 0 else 0 }}%)</p>
-        <p>Leads Perdidos: {{ quantidade_perdido }} ({{ (quantidade_perdido / total_leads) * 100 if total_leads > 0 else 0 }}%)</p>
+        <p>Leads Abertos: {{ quantidade_aberto }} ({{ ((quantidade_aberto / total_leads) * 100) | round(0) }}%)</p>
+        <p>Leads Convertidos: {{ quantidade_convertido }} ({{ ((quantidade_convertido / total_leads) * 100) | round(0) }}%)</p>
+        <p>Leads Perdidos: {{ quantidade_perdido }} ({{ ((quantidade_perdido / total_leads) * 100) | round(0) }}%)</p>
     </div>
 
     <h3>Leads Atribuídos</h3>
@@ -29,38 +29,37 @@
         <tbody>
             {% for lead in leads %}
             <tr>
-                <form method="POST" action="{{ url_for('atualizar_lead', vendedor_id=vendedor.id) }}">
-                    <input type="hidden" name="lead_id" value="{{ lead.id }}">
-                    <td>{{ lead.data_lead.strftime('%d/%m/%y') }}</td>
-                    <td>{{ lead.nome }}</td>
-                    <td>{{ lead.veiculo }}</td>
-                    <td>{{ lead.modelo }}</td>
-                    <td>
-                        <select name="status_{{ lead.id }}">
+                <td>{{ lead.data_lead.strftime('%d/%m/%y') }}</td>
+                <td>{{ lead.nome }}</td>
+                <td>{{ lead.veiculo }}</td>
+                <td>{{ lead.modelo }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('atualizar_lead', vendedor_id=vendedor.id) }}" class="form-inline">
+                        <input type="hidden" name="lead_id" value="{{ lead.id }}">
+                        <select name="status">
                             <option value="Aberto" {% if lead.status == 'Aberto' %}selected{% endif %}>Aberto</option>
                             <option value="Convertido" {% if lead.status == 'Convertido' %}selected{% endif %}>Convertido</option>
                             <option value="Perdido" {% if lead.status == 'Perdido' %}selected{% endif %}>Perdido</option>
                         </select>
-                    </td>
-                    <td>
-                        <select name="faturado_{{ lead.id }}">
-                            <option value="Sim" {% if lead.faturado == 'Sim' %}selected{% endif %}>Sim</option>
-                            <option value="Nao" {% if lead.faturado == 'Nao' %}selected{% endif %}>Não</option>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="text" name="cliente_faturado_{{ lead.id }}" value="{{ lead.cliente_faturado }}" placeholder="Nome do Cliente">
-                    </td>
-                    <td>
-                        <input type="text" name="nota_fiscal_{{ lead.id }}" value="{{ lead.nota_fiscal }}" placeholder="Nota Fiscal">
-                    </td>
-                    <td>
-                        <button type="submit" class="botao-salvar">Salvar</button>
-                    </td>
-                </form>
+                </td>
                 <td>
-                    <form method="POST" action="{{ url_for('remover_lead', vendedor_id=vendedor.id, lead_id=lead.id) }}">
-                        <button type="submit" class="botao-remover">Remover</button>
+                    <select name="faturado">
+                        <option value="Sim" {% if lead.faturado == 'Sim' %}selected{% endif %}>Sim</option>
+                        <option value="Nao" {% if lead.faturado == 'Nao' %}selected{% endif %}>Não</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" name="cliente_faturado" value="{{ lead.cliente_faturado }}" placeholder="Nome do Cliente">
+                </td>
+                <td>
+                    <input type="text" name="nota_fiscal" value="{{ lead.nota_fiscal }}" placeholder="Nota Fiscal">
+                </td>
+                <td>
+                    <button type="submit" class="botao-salvar">Salvar</button>
+                    </form>
+                    <!-- Formulário para remover o lead -->
+                    <form method="POST" action="{{ url_for('remover_lead', vendedor_id=vendedor.id, lead_id=lead.id) }}" class="form-inline" style="display:inline;">
+                        <button type="submit" class="botao-remover">Excluir</button>
                     </form>
                 </td>
             </tr>
@@ -76,6 +75,25 @@
     <div class="grafico-performance-container">
         <canvas id="graficoPerformanceVendedor"></canvas>
     </div>
+
+    <!-- Filtro de Tempo para o Gráfico Temporal -->
+    <h3>Filtro de Tempo (Mensal)</h3>
+    <div class="date-filter">
+        <label for="inicio" class="filter-label">Período de Início:</label>
+        <input type="month" id="inicio" class="filter-input" name="inicio">
+    </div>
+    <div class="date-filter">
+        <label for="fim" class="filter-label">Período de Fim:</label>
+        <input type="month" id="fim" class="filter-input" name="fim">
+    </div>
+    <div class="filter-button-wrapper">
+        <button type="button" onclick="atualizarGraficoTemporal()" class="filter-button">Filtrar</button>
+    </div>
+
+    <h3>Desempenho Temporal do Vendedor</h3>
+    <div class="grafico-performance-container">
+        <canvas id="graficoPerformanceTemporal"></canvas>
+    </div>
 </div>
 
 <script>
@@ -83,6 +101,7 @@
         const totalLeads = {{ total_leads }};
         const ctx = document.getElementById('graficoPerformanceVendedor').getContext('2d');
 
+        // Gráfico de desempenho geral do vendedor
         new Chart(ctx, {
             type: 'bar',
             data: {
@@ -102,7 +121,7 @@
                         callbacks: {
                             label: function(tooltipItem) {
                                 const valor = tooltipItem.raw;
-                                const porcentagem = (valor / totalLeads * 100).toFixed(2);
+                                const porcentagem = Math.round(valor / totalLeads * 100);
                                 return `${valor} Leads (${porcentagem}%)`;
                             }
                         }
@@ -125,6 +144,78 @@
                 }
             }
         });
+
+        // Função para carregar o gráfico temporal
+        window.atualizarGraficoTemporal = function() {
+            const inicio = document.getElementById('inicio').value;
+            const fim = document.getElementById('fim').value;
+
+            fetch(`/vendedores/{{ vendedor.id }}/desempenho_temporal`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    inicio: inicio,
+                    fim: fim
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const ctxTemporal = document.getElementById('graficoPerformanceTemporal').getContext('2d');
+                new Chart(ctxTemporal, {
+                    type: 'bar',
+                    data: {
+                        labels: data.meses,
+                        datasets: [
+                            {
+                                label: 'Abertos',
+                                data: data.abertos,
+                                backgroundColor: '#FFCE56',
+                                borderColor: '#FFCE56',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Convertidos',
+                                data: data.convertidos,
+                                backgroundColor: '#4CAF50',
+                                borderColor: '#4CAF50',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Perdidos',
+                                data: data.perdidos,
+                                backgroundColor: '#F7464A',
+                                borderColor: '#F7464A',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Mês'
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Quantidade de Leads'
+                                }
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao carregar gráfico temporal:', error);
+            });
+        };
     });
 </script>
+
 {% endblock %}

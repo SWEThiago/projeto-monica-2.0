@@ -4,18 +4,6 @@
         "nome": "Vendedor 1",
         "leads": [
             {
-                "id": 1,
-                "data_lead": "2024-04-10",
-                "nome": "Cliente 1",
-                "contato": "cliente1@gmail.com",
-                "veiculo": "Ram",
-                "modelo": "Compass",
-                "status": "Convertido",
-                "faturado": null,
-                "cliente_faturado": "",
-                "nota_fiscal": ""
-            },
-            {
                 "id": 2,
                 "data_lead": "2024-05-12",
                 "nome": "Cliente 2",
@@ -72,6 +60,66 @@
                 "modelo": "compass",
                 "status": "Convertido",
                 "faturado": null,
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 7,
+                "data_lead": "2024-10-23",
+                "nome": "Monica",
+                "contato": "teste@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "compass",
+                "status": "Convertido",
+                "faturado": "Nao",
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 8,
+                "data_lead": "2024-10-23",
+                "nome": "Thiago teste",
+                "contato": "teste@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "compass",
+                "status": "Convertido",
+                "faturado": "Nao",
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 9,
+                "data_lead": "2024-10-23",
+                "nome": "Monica",
+                "contato": "teste@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "compass",
+                "status": "Perdido",
+                "faturado": "Nao",
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 10,
+                "data_lead": "2024-10-23",
+                "nome": "Monica",
+                "contato": "teste@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "compass",
+                "status": "Convertido",
+                "faturado": "Sim",
+                "cliente_faturado": "asasasa",
+                "nota_fiscal": "656565"
+            },
+            {
+                "id": 11,
+                "data_lead": "2024-10-23",
+                "nome": "Monica",
+                "contato": "teste@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "compass",
+                "status": "Aberto",
+                "faturado": "Nao",
                 "cliente_faturado": "",
                 "nota_fiscal": ""
             }

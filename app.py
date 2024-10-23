@@ -126,10 +126,10 @@ def atualizar_lead(vendedor_id):
             lead_id = int(request.form.get('lead_id'))
             for lead in vendedor['leads']:
                 if lead['id'] == lead_id:
-                    lead['status'] = request.form.get(f'status_{lead_id}')
-                    lead['faturado'] = request.form.get(f'faturado_{lead_id}')
-                    lead['cliente_faturado'] = request.form.get(f'cliente_faturado_{lead_id}', '')
-                    lead['nota_fiscal'] = request.form.get(f'nota_fiscal_{lead_id}', '')
+                    lead['status'] = request.form.get('status')
+                    lead['faturado'] = request.form.get('faturado')
+                    lead['cliente_faturado'] = request.form.get('cliente_faturado', '')
+                    lead['nota_fiscal'] = request.form.get('nota_fiscal', '')
                     salvar_dados(dados)
                     return redirect(url_for('detalhes_vendedor', vendedor_id=vendedor_id))
         except (KeyError, ValueError):
@@ -149,6 +149,51 @@ def remover_lead(vendedor_id, lead_id):
         return redirect(url_for('detalhes_vendedor', vendedor_id=vendedor_id))
 
     return "Erro: Vendedor ou Lead não encontrado", 400
+
+# Rota para gerar o gráfico temporal do desempenho do vendedor
+@app.route('/vendedores/<int:vendedor_id>/desempenho_temporal', methods=['POST'])
+def desempenho_temporal(vendedor_id):
+    dados = carregar_dados()
+    vendedor = obter_vendedor(dados, vendedor_id)
+
+    if not vendedor:
+        return jsonify({"error": "Vendedor não encontrado"}), 404
+
+    inicio_str = request.json.get('inicio')
+    fim_str = request.json.get('fim')
+
+    # Converte strings de data para objetos datetime
+    inicio = datetime.strptime(inicio_str, '%Y-%m') if inicio_str else None
+    fim = datetime.strptime(fim_str, '%Y-%m') if fim_str else None
+
+    # Inicializa os dados do gráfico para cada mês
+    desempenho_por_mes = {}
+
+    for lead in vendedor['leads']:
+        data_lead = datetime.strptime(lead['data_lead'], '%Y-%m-%d')
+        
+        if (not inicio or data_lead >= inicio) and (not fim or data_lead <= fim):
+            mes = data_lead.strftime('%Y-%m')
+            if mes not in desempenho_por_mes:
+                desempenho_por_mes[mes] = {'abertos': 0, 'convertidos': 0, 'perdidos': 0}
+            
+            if lead['status'] == 'Aberto':
+                desempenho_por_mes[mes]['abertos'] += 1
+            elif lead['status'] == 'Convertido':
+                desempenho_por_mes[mes]['convertidos'] += 1
+            elif lead['status'] == 'Perdido':
+                desempenho_por_mes[mes]['perdidos'] += 1
+
+    # Formata os dados para o gráfico
+    meses = sorted(desempenho_por_mes.keys())
+    dados_grafico = {
+        'meses': meses,
+        'abertos': [desempenho_por_mes[mes]['abertos'] for mes in meses],
+        'convertidos': [desempenho_por_mes[mes]['convertidos'] for mes in meses],
+        'perdidos': [desempenho_por_mes[mes]['perdidos'] for mes in meses],
+    }
+
+    return jsonify(dados_grafico)
 
 # Rota para gerar gráficos filtrados
 @app.route('/filtrar_dados', methods=['POST'])
