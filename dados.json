@@ -1,1 +1,74 @@
-[]
+[
+    {
+        "id": 1,
+        "nome": "Junior",
+        "leads": [
+            {
+                "id": 1,
+                "data_lead": "2024-10-24",
+                "nome": "Lead provisorio",
+                "contato": "teste@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "teste",
+                "status": "Aberto",
+                "faturado": "Nao",
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "nome": "Michele",
+        "leads": [
+            {
+                "id": 1,
+                "data_lead": "2024-10-24",
+                "nome": "Lead provisorio",
+                "contato": "teste@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "teste",
+                "status": "Aberto",
+                "faturado": "Nao",
+                "cliente_faturado": "teste",
+                "nota_fiscal": "656565"
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "nome": "Luiz",
+        "leads": [
+            {
+                "id": 1,
+                "data_lead": "2024-10-24",
+                "nome": "Lead provisorio",
+                "contato": "teste@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "teste",
+                "status": "Aberto",
+                "faturado": "Nao",
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "nome": "Iano",
+        "leads": [
+            {
+                "id": 1,
+                "data_lead": "2024-10-24",
+                "nome": "Lead provisorio",
+                "contato": "teste@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "teste",
+                "status": "Aberto",
+                "faturado": "Nao",
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            }
+        ]
+    }
+]
