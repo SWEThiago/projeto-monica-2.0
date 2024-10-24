@@ -1,0 +1,86 @@
+/* 1. Cabeçalho e Navegação */
+.header-layout {
+    background-color: #2e2e2e;
+    padding: 15px 0;
+    text-align: center;
+    border-bottom: 3px solid #20c997; /* Destaque no cabeçalho */
+}
+
+.nav-menu {
+    display: flex;
+    justify-content: center; /* Centraliza o menu horizontalmente */
+    align-items: center;
+    gap: 20px; /* Espaçamento entre os itens do menu */
+}
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    gap: 20px; /* Espaçamento entre os links */
+    margin: 0;
+}
+
+.nav-item {
+    margin: 0;
+}
+
+.nav-link {
+    color: #f0f0f0; /* Cor branco claro para os links */
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+
+.nav-link:hover {
+    background-color: #444444; /* Fundo cinza escuro */
+    color: #ffffff; /* Texto continua branco */
+}
+
+
+/* 2. Conteúdo Principal */
+.main-content {
+    padding: 20px;
+    min-height: 60vh; /* Garante que o conteúdo ocupe um bom espaço da tela */
+    background-color: #1C1C1C;
+    color: #ffffff;
+    text-align: center;
+}
+
+h1, h2, h3, h4, h5 {
+    color: #20c997; /* Cores de destaque para títulos */
+}
+
+p {
+    margin-bottom: 20px;
+}
+
+/* 3. Rodapé */
+.footer-layout {
+    background-color: #2e2e2e;
+    padding: 15px 0;
+    text-align: center;
+    color: #ffffff;
+    border-top: 3px solid #20c997;
+}
+
+.footer-layout p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* 4. Responsividade */
+@media (max-width: 768px) {
+    .nav-menu {
+        flex-direction: column; /* Menu em coluna para telas pequenas */
+    }
+
+    .nav-link {
+        padding: 8px 0;
+        width: 100%; /* Links ocupam toda a largura no mobile */
+        text-align: center;
+    }
+}

@@ -1,0 +1,144 @@
+/* 1. Estrutura Geral */
+.vendedores-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #2e2e2e;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+}
+
+.vendedores-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.vendedores-header h2 {
+    font-size: 2rem;
+    color: #20c997;
+}
+
+.form-adicionar-vendedor {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.input-novo-vendedor {
+    padding: 10px;
+    background-color: #333;
+    border: 1px solid #444;
+    border-radius: 8px;
+    color: #ffffff;
+    width: 70%;
+}
+
+.botao-adicionar-vendedor {
+    background-color: #20c997;
+    color: #ffffff;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.botao-adicionar-vendedor:hover {
+    background-color: #17a589;
+    transform: translateY(-2px);
+}
+
+/* 2. Lista de Vendedores */
+.vendedores-lista {
+    margin-top: 30px;
+}
+
+.vendedores-lista h3 {
+    font-size: 1.5rem;
+    color: #20c997;
+    margin-bottom: 20px;
+}
+
+.lista-vendedores {
+    list-style: none;
+    padding: 0;
+}
+
+.vendedor-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #333;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.vendedor-item:hover {
+    transform: translateY(-5px);
+}
+
+.vendedor-nome {
+    font-size: 1.2rem;
+    color: #ffffff;
+}
+
+.vendedor-acoes {
+    display: flex;
+    gap: 10px;
+}
+
+.botao-detalhes-vendedor, .botao-remover-vendedor {
+    padding: 8px 15px;
+    background-color: #20c997;
+    color: #ffffff;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.botao-detalhes-vendedor:hover, .botao-remover-vendedor:hover {
+    background-color: #17a589;
+    transform: translateY(-2px);
+}
+
+.botao-remover-vendedor {
+    background-color: #f7464a;
+}
+
+.botao-remover-vendedor:hover {
+    background-color: #d73535;
+}
+
+/* 3. Responsividade */
+@media (max-width: 768px) {
+    .form-adicionar-vendedor {
+        flex-direction: column;
+    }
+
+    .input-novo-vendedor {
+        width: 100%;
+    }
+
+    .botao-adicionar-vendedor {
+        width: 100%;
+    }
+
+    .vendedor-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .vendedor-acoes {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+}

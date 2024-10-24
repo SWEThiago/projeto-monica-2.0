@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/leads.css') }}">
+{% endblock %}
+
 {% block content %}
 <div class="leads-container">
     <h2 class="leads-title">Adicionar Lead</h2>

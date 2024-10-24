@@ -1,0 +1,184 @@
+/* 1. Estilização do Título e Subtítulo */
+.index-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.index-header h2 {
+    font-size: 3rem;
+    color: #20c997;
+    margin-bottom: 10px;
+}
+
+.index-header p {
+    font-size: 1.5rem;
+    color: #ffffff;
+}
+
+/* 2. Fundo para a Seção de Conteúdo */
+.index-content-wrapper {
+    background-color: #2e2e2e;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    margin-bottom: 40px;
+}
+
+/* 3. Estilização dos Leads Gerados */
+.index-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin-bottom: 40px;
+}
+
+.indicator-box {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+}
+
+.indicator-box h3 {
+    font-size: 1.2rem;
+    color: #20c997;
+    margin-bottom: 10px;
+}
+
+.indicator-value {
+    font-size: 2.5rem; /* Aumenta o tamanho dos números */
+    font-weight: bold;
+    color: #f1c40f; /* Cor diferenciada para os números */
+}
+
+/* 4. Filtro de Tempo */
+.index-filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto 40px auto;
+    gap: 10px;
+}
+
+.filter-label {
+    color: #ffffff;
+    font-size: 1rem;
+}
+
+.filter-input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #20c997;
+    background-color: #333;
+    color: #ffffff;
+}
+
+/* Botão de Filtrar */
+.filter-button {
+    background-color: #20c997;
+    color: #ffffff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.filter-button:hover {
+    background-color: #17a589;
+}
+
+/* 5. Lista de Vendedores e Checkboxes Estilizados */
+.index-vendedores {
+    max-width: 800px;
+    margin: 0 auto 40px auto;
+}
+
+.vendedores-title {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.vendedores-checkboxes {
+    display: flex;
+    justify-content: space-between; /* Mantém os checkboxes em linha e centralizados */
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Estilo Moderno e Tecnológico para Checkboxes */
+.vendedor-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #ffffff;
+}
+
+.vendedor-checkbox input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background-color: #333;
+    border: 2px solid #20c997;
+    border-radius: 5px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.vendedor-checkbox input[type="checkbox"]:checked {
+    background-color: #20c997;
+    transform: scale(1.1);
+}
+
+.vendedor-checkbox input[type="checkbox"]::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 8px;
+    width: 6px;
+    height: 12px;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    transform: rotate(45deg);
+}
+
+.vendedor-checkbox input[type="checkbox"]:checked::before {
+    opacity: 1;
+}
+
+/* 6. Estilização dos Gráficos */
+.index-graficos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Duas colunas */
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.grafico-box {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.grafico-title {
+    font-size: 1.2rem;
+    color: #20c997;
+    margin-bottom: 20px;
+}
+
+canvas {
+    max-width: 100%;
+    height: auto;
+}

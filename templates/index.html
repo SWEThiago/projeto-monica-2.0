@@ -1,80 +1,91 @@
 {% extends 'base.html' %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
 {% block content %}
 <div class="index-layout">
-    <!-- Título principal da página -->
-    <div class="index-header">
-        <h2 class="index-title">SanMarco Leads</h2>
-        <p class="index-subtitle">by Thiago</p>
-    </div>
+    
+    <!-- Adicionando a estrutura de fundo -->
+    <div class="index-content-wrapper">
 
-    <!-- Seção de indicadores rápidos -->
-    <div class="index-indicators">
-        <div class="indicator-box">
-            <h3 class="indicator-title">Leads Gerados no Mês</h3>
-            <p class="indicator-value">{{ leads_mensais }}</p>
+        <!-- Título principal da página -->
+        <div class="index-header">
+            <h2>San Marco</h2>
+            <p>by Thiago</p>
         </div>
-        <div class="indicator-box">
-            <h3 class="indicator-title">Leads Gerados Hoje</h3>
-            <p class="indicator-value">{{ leads_diarios }}</p>
-        </div>
-    </div>
 
-    <!-- Seção de filtros e gráficos -->
-    <div class="index-filters">
-        <div class="date-filter">
-            <label for="inicio" class="filter-label">Período de Início:</label>
-            <input type="date" id="inicio" class="filter-input" name="inicio">
-        </div>
-        <div class="date-filter">
-            <label for="fim" class="filter-label">Período de Fim:</label>
-            <input type="date" id="fim" class="filter-input" name="fim">
-        </div>
-        <div class="filter-button-wrapper">
-            <button type="button" onclick="filtrarPorTempo()" class="filter-button">Filtrar</button>
-        </div>
-    </div>
-
-    <!-- Seção de seleção de vendedores -->
-    <div class="index-vendedores">
-        <h3 class="vendedores-title">Selecione os Vendedores:</h3>
-        <div class="vendedores-checkboxes">
-            {% for vendedor in vendedores %}
-            <div class="vendedor-checkbox">
-                <input type="checkbox" id="vendedor_{{ vendedor.id }}" name="vendedores" value="{{ vendedor.id }}">
-                <label for="vendedor_{{ vendedor.id }}">{{ vendedor.nome }}</label>
+        <!-- Seção de indicadores rápidos -->
+        <div class="index-indicators">
+            <div class="indicator-box">
+                <h3 class="indicator-title">Leads Gerados no Mês</h3>
+                <p class="indicator-value">{{ leads_mensais }}</p>
             </div>
-            {% endfor %}
+            <div class="indicator-box">
+                <h3 class="indicator-title">Leads Gerados Hoje</h3>
+                <p class="indicator-value">{{ leads_diarios }}</p>
+            </div>
         </div>
-    </div>
 
-    <!-- Seção de gráficos -->
-    <div class="index-graficos">
-        <div class="grafico-box">
-            <h3 class="grafico-title">Gráfico de Taxa de Conversão</h3>
-            <canvas id="graficoConversao"></canvas>
+        <!-- Seção de filtros -->
+        <div class="index-filters">
+            <div class="date-filter">
+                <label for="inicio" class="filter-label">Período de Início:</label>
+                <input type="date" id="inicio" class="filter-input" name="inicio">
+            </div>
+            <div class="date-filter">
+                <label for="fim" class="filter-label">Período de Fim:</label>
+                <input type="date" id="fim" class="filter-input" name="fim">
+            </div>
+            <div class="filter-button-wrapper">
+                <button type="button" onclick="filtrarPorTempo()" class="filter-button">Filtrar</button>
+            </div>
         </div>
-        <div class="grafico-box">
-            <h3 class="grafico-title">Gráfico de Leads em Aberto</h3>
-            <canvas id="graficoAberto"></canvas>
+
+        <!-- Seção de seleção de vendedores -->
+        <div class="index-vendedores">
+            <h3 class="vendedores-title">Selecione os Vendedores:</h3>
+            <div class="vendedores-checkboxes">
+                {% for vendedor in vendedores %}
+                <div class="vendedor-checkbox">
+                    <input type="checkbox" id="vendedor_{{ vendedor.id }}" name="vendedores" value="{{ vendedor.id }}">
+                    <label for="vendedor_{{ vendedor.id }}">{{ vendedor.nome }}</label>
+                </div>
+                {% endfor %}
+            </div>
         </div>
-        <div class="grafico-box">
-            <h3 class="grafico-title">Gráfico de Leads Perdidos</h3>
-            <canvas id="graficoPerdido"></canvas>
+
+        <!-- Seção de gráficos -->
+        <div class="index-graficos">
+            <div class="grafico-box">
+                <h3 class="grafico-title">Gráfico de Taxa de Conversão</h3>
+                <canvas id="graficoConversao"></canvas>
+            </div>
+            <div class="grafico-box">
+                <h3 class="grafico-title">Gráfico de Leads em Aberto</h3>
+                <canvas id="graficoAberto"></canvas>
+            </div>
+            <div class="grafico-box">
+                <h3 class="grafico-title">Gráfico de Leads Perdidos</h3>
+                <canvas id="graficoPerdido"></canvas>
+            </div>
+            <div class="grafico-box">
+                <h3 class="grafico-title">Ranking de Vendedores por Conversão</h3>
+                <canvas id="graficoRanking"></canvas>
+            </div>
+            <div class="grafico-box">
+                <h3 class="grafico-title">Leads por Tipo de Veículo</h3>
+                <canvas id="graficoVeiculo"></canvas>
+            </div>
+            <div class="grafico-box">
+                <h3 class="grafico-title">Comparativo de Vendas em Diferentes Períodos</h3>
+                <canvas id="graficoComparativo"></canvas>
+            </div>
         </div>
-        <div class="grafico-box">
-            <h3 class="grafico-title">Ranking de Vendedores por Conversão</h3>
-            <canvas id="graficoRanking"></canvas>
-        </div>
-        <div class="grafico-box">
-            <h3 class="grafico-title">Leads por Tipo de Veículo</h3>
-            <canvas id="graficoVeiculo"></canvas>
-        </div>
-        <div class="grafico-box">
-            <h3 class="grafico-title">Comparativo de Vendas em Diferentes Períodos</h3>
-            <canvas id="graficoComparativo"></canvas>
-        </div>
-    </div>
+        
+    </div> <!-- Fim da div index-content-wrapper -->
+
 </div>
 
 <!-- Inclusão dos scripts JavaScript -->

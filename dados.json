@@ -70,7 +70,7 @@
                 "contato": "teste@gmail.com",
                 "veiculo": "Ram",
                 "modelo": "compass",
-                "status": "Convertido",
+                "status": "Perdido",
                 "faturado": "Sim",
                 "cliente_faturado": "sssss",
                 "nota_fiscal": "ssssss"
@@ -128,6 +128,30 @@
                 "data_lead": "2024-10-23",
                 "nome": "Monica teste",
                 "contato": "boa@gmail.com",
+                "veiculo": "Citroen",
+                "modelo": "gol",
+                "status": "Aberto",
+                "faturado": "Nao",
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 12,
+                "data_lead": "2024-10-23",
+                "nome": "Thiago teste",
+                "contato": "teste@gmail.com",
+                "veiculo": "Ram",
+                "modelo": "compass",
+                "status": "Aberto",
+                "faturado": "Nao",
+                "cliente_faturado": "",
+                "nota_fiscal": ""
+            },
+            {
+                "id": 13,
+                "data_lead": "2024-10-23",
+                "nome": "Monica",
+                "contato": "teste@gmail.com",
                 "veiculo": "Citroen",
                 "modelo": "gol",
                 "status": "Aberto",
@@ -352,36 +376,6 @@
                 "contato": "teste@gmail.com",
                 "veiculo": "Ram",
                 "modelo": "compass",
-                "status": "Aberto",
-                "faturado": "Nao",
-                "cliente_faturado": "",
-                "nota_fiscal": ""
-            }
-        ]
-    },
-    {
-        "id": 5,
-        "nome": "Thiago 3",
-        "leads": [
-            {
-                "id": 1,
-                "data_lead": "2024-10-23",
-                "nome": "Monica",
-                "contato": "teste@gmail.com",
-                "veiculo": "Ram",
-                "modelo": "compass",
-                "status": "Aberto",
-                "faturado": "Nao",
-                "cliente_faturado": "",
-                "nota_fiscal": ""
-            },
-            {
-                "id": 2,
-                "data_lead": "2024-10-23",
-                "nome": "Thiago teste",
-                "contato": "teste@gmail.com",
-                "veiculo": "Citroen",
-                "modelo": "gol",
                 "status": "Aberto",
                 "faturado": "Nao",
                 "cliente_faturado": "",

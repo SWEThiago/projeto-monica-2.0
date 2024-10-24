@@ -1,0 +1,90 @@
+/* 1. Estrutura Geral */
+.leads-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #2e2e2e; /* Fundo escuro moderno */
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra suave */
+}
+
+.leads-title {
+    text-align: center;
+    color: #20c997; /* Cor de destaque */
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+/* 2. Estilos do Formulário */
+.leads-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px; /* Espaçamento entre os campos */
+}
+
+.leads-form .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.leads-label {
+    color: #ffffff;
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+/* 3. Inputs e Selects */
+.leads-input, .leads-select {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.leads-input:focus, .leads-select:focus {
+    border-color: #20c997;
+    box-shadow: 0px 0px 10px rgba(32, 201, 151, 0.5); /* Efeito de brilho ao focar */
+    outline: none;
+}
+
+/* Estilos para selects */
+.leads-select {
+    appearance: none; /* Remove seta padrão do select */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-chevron-down'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); /* Ícone personalizado */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+}
+
+/* 4. Botão de Adicionar Lead */
+.btn-adicionar-lead {
+    grid-column: span 2; /* Botão ocupa toda a largura */
+    padding: 15px;
+    background-color: #20c997;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-align: center;
+}
+
+.btn-adicionar-lead:hover {
+    background-color: #17a589;
+    transform: translateY(-2px); /* Efeito de elevação */
+}
+
+/* 5. Responsividade */
+@media (max-width: 768px) {
+    .leads-form {
+        grid-template-columns: 1fr; /* Campos ocupam 100% da largura no mobile */
+    }
+
+    .btn-adicionar-lead {
+        grid-column: 1; /* Botão ajusta para uma coluna no mobile */
+    }
+}

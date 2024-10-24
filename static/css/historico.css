@@ -1,0 +1,178 @@
+/* 1. Estrutura Geral */
+.historico-leads-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #2e2e2e; /* Fundo escuro */
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+}
+
+.historico-leads-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.historico-leads-header h2 {
+    font-size: 2rem;
+    color: #20c997;
+}
+
+.historico-leads-header p {
+    font-size: 1rem;
+    color: #b0b0b0; /* Cor suave para o subtítulo */
+}
+
+/* 2. Filtro de Período */
+.filtro-tempo-container {
+    margin-bottom: 30px;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.filtro-tempo-container h3 {
+    color: #20c997;
+    margin-bottom: 15px;
+}
+
+.filtro-tempo-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 20px;
+}
+
+.filtro-data label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1rem;
+    color: #ffffff;
+}
+
+.input-data {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    border: 1px solid #444;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+}
+
+.botao-filtrar {
+    background-color: #20c997;
+    color: #ffffff;
+    padding: 15px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    align-self: center;
+}
+
+.botao-filtrar:hover {
+    background-color: #17a589;
+    transform: translateY(-2px);
+}
+
+/* 3. Gráficos */
+.grafico-historico-container {
+    margin-top: 40px;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.grafico-historico-container h3 {
+    color: #20c997;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* 4. Botão de Download */
+.download-container {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.download-container h3 {
+    color: #20c997;
+    margin-bottom: 15px;
+}
+
+.download-container button {
+    background-color: #20c997;
+    color: #ffffff;
+    padding: 15px 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.download-container button:hover {
+    background-color: #17a589;
+    transform: translateY(-2px);
+}
+
+/* 5. Modal de Senha */
+#modalSenha {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.7); /* Fundo transparente */
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    color: #ffffff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+#modalSenha h3 {
+    color: #20c997;
+}
+
+#modalSenha input {
+    padding: 10px;
+    width: 80%;
+    margin-bottom: 20px;
+    background-color: #333;
+    border: 1px solid #444;
+    border-radius: 8px;
+    color: #ffffff;
+}
+
+#modalSenha button {
+    background-color: #20c997;
+    color: #ffffff;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#modalSenha button:hover {
+    background-color: #17a589;
+    transform: translateY(-2px);
+}
+
+/* 6. Responsividade */
+@media (max-width: 768px) {
+    .filtro-tempo-form {
+        grid-template-columns: 1fr; /* Filtro em uma única coluna no mobile */
+    }
+
+    .grafico-historico-container {
+        padding: 15px;
+    }
+
+    .botao-filtrar {
+        padding: 12px;
+    }
+}

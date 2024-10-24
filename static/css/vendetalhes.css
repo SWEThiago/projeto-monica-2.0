@@ -1,0 +1,225 @@
+/* 1. Estrutura Geral */
+.vendedor-detalhes-container {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #2e2e2e;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+}
+
+.vendedor-detalhes-container h2 {
+    text-align: center;
+    color: #20c997;
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+/* 2. Informações de Leads */
+.leads-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    padding: 15px;
+    background-color: #333;
+    border-radius: 8px;
+}
+
+.leads-info p {
+    font-size: 1.1rem;
+    margin: 0;
+    color: #ffffff;
+}
+
+/* 3. Tabela de Leads com barra de rolagem horizontal */
+.table-leads-wrapper {
+    overflow-x: auto; /* Adiciona rolagem horizontal */
+    margin-bottom: 30px;
+}
+
+.table-leads {
+    width: 100%;
+    min-width: 1500px; /* Aumenta a largura mínima da tabela para monitores maiores */
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    table-layout: auto; /* Permite que o tamanho das colunas se ajuste ao conteúdo */
+}
+
+.table-leads th, .table-leads td {
+    padding: 15px;
+    border: 1px solid #444;
+    color: #ffffff;
+    text-align: center; /* Centraliza o conteúdo da tabela */
+    white-space: nowrap; /* Impede a quebra de linha */
+}
+
+.table-leads th {
+    background-color: #2e2e2e;
+    color: #20c997;
+}
+
+.table-leads tr:nth-child(odd) {
+    background-color: #333;
+}
+
+.table-leads tr:nth-child(even) {
+    background-color: #262626;
+}
+
+/* Adiciona a linha de 3px abaixo da linha da tabela com cor correspondente ao status */
+.table-leads tr.status-aberto {
+    border-bottom: 2px solid #FFCE56; /* Amarelo para Aberto */
+}
+
+.table-leads tr.status-convertido {
+    border-bottom: 2px solid #4CAF50; /* Verde para Convertido */
+}
+
+.table-leads tr.status-perdido {
+    border-bottom: 2px solid #F7464A; /* Vermelho para Perdido */
+}
+
+/* Centraliza os botões de Salvar e Excluir em uma única linha */
+.table-leads td form {
+    display: inline-block;
+}
+
+.table-leads input[type="text"], .table-leads select {
+    background-color: #333;
+    color: #ffffff;
+    border: 1px solid #444;
+    padding: 8px;
+    border-radius: 5px;
+    width: auto; /* Deixa os inputs flexíveis, sem ocupar 100% */
+}
+
+.table-leads input[type="text"]:focus, .table-leads select:focus {
+    outline: none;
+    border-color: #20c997;
+}
+
+/* 4. Gráficos */
+.grafico-performance-container {
+    margin-top: 40px;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.grafico-performance-container h3 {
+    text-align: center;
+    color: #20c997;
+    margin-bottom: 20px;
+}
+
+/* Limitação do tamanho dos gráficos */
+.grafico-performance-container canvas {
+    max-width: 800px; /* Define uma largura máxima para os gráficos */
+    max-height: 400px; /* Define uma altura máxima para os gráficos */
+    width: 60%; /* Garante que os gráficos se ajustem ao espaço disponível */
+    height: auto; /* Mantém a proporção dos gráficos */
+    margin: 0 auto; /* Centraliza os gráficos */
+}
+
+
+/* 5. Filtros de Tempo em uma linha */
+.date-filter-wrapper {
+    max-width: 800px; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin: 30px auto 0 auto; /* Centraliza o filtro horizontalmente */
+}
+
+/* Ajuste do tamanho dos títulos */
+.date-filter label {
+    font-size: 0.7rem; /* Reduz o tamanho dos títulos para centralizar com o botão */
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.filter-button-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.filter-button {
+    background-color: #20c997;
+    color: #ffffff;
+    padding: 12px 20px; /* Ajusta o padding para combinar com o tamanho reduzido */
+    font-size: 0.7rem; /* Ajusta o tamanho da fonte do botão para centralizar com os inputs */
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.filter-button:hover {
+    background-color: #17a589;
+    transform: translateY(-2px);
+}
+
+.vendedor-detalhes-container h3 {
+    font-size: 1.2rem; /* Reduz o tamanho do h3 para ficar mais proporcional */
+    margin-bottom: 12px; /* Aumenta o espaçamento inferior do h3 */
+    color: #20c997; /* Mantém a cor do título consistente */
+    text-align: center; /* Centraliza o título */
+    margin-top: 12px; /* Adiciona espaçamento superior para separação do gráfico */
+}
+
+/* Estilo para os dados modificáveis antes da tabela, com cores específicas */
+.vendedor-detalhes-container .dados-abertos {
+    color: #FFCE56; /* Amarelo para Leads Abertos */
+    font-weight: bold;
+}
+
+.vendedor-detalhes-container .dados-convertidos {
+    color: #4CAF50; /* Verde para Leads Convertidos */
+    font-weight: bold;
+}
+
+.vendedor-detalhes-container .dados-perdidos {
+    color: #F7464A; /* Vermelho para Leads Perdidos */
+    font-weight: bold;
+}
+
+/* Estilos para o botão de excluir */
+.table-leads .botao-remover {
+    background-color: #F7464A; /* Vermelho sólido para o botão de excluir */
+    color: #ffffff;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.table-leads .botao-remover:hover {
+    background-color: #d73535;
+    transform: translateY(-2px);
+}
+
+/* 6. Responsividade */
+@media (max-width: 768px) {
+    .leads-info {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .table-leads th, .table-leads td {
+        padding: 10px;
+    }
+
+    .date-filter-wrapper {
+        flex-direction: column; /* Filtro volta a ser vertical em telas pequenas */
+        gap: 15px;
+    }
+
+    .filter-button {
+        width: 100%;
+    }
+}

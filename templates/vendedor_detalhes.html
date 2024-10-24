@@ -1,20 +1,27 @@
 {% extends 'base.html' %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vendetalhes.css') }}">
+{% endblock %}
+
 {% block content %}
 <div class="vendedor-detalhes-container">
     <h2>Detalhes do Vendedor: {{ vendedor.nome }}</h2>
 
     <div class="leads-info">
-        <p>Total de Leads: {{ total_leads }}</p>
-        <p>Leads Abertos: {{ quantidade_aberto }} ({{ ((quantidade_aberto / total_leads) * 100) | round(0) }}%)</p>
-        <p>Leads Convertidos: {{ quantidade_convertido }} ({{ ((quantidade_convertido / total_leads) * 100) | round(0) }}%)</p>
-        <p>Leads Perdidos: {{ quantidade_perdido }} ({{ ((quantidade_perdido / total_leads) * 100) | round(0) }}%)</p>
+        <p>Total de Leads: <span class="dados-convertidos"> {{ total_leads }}</span></p>
+        <p>Leads Abertos: <span class="dados-abertos"> {{ quantidade_aberto }} ({{ ((quantidade_aberto / total_leads) * 100) | round(0) }}%)</span></p>
+        <p>Leads Convertidos: <span class="dados-convertidos"> {{ quantidade_convertido }} ({{ ((quantidade_convertido / total_leads) * 100) | round(0) }}%)</span></p>
+        <p>Leads Perdidos: <span class="dados-perdidos"> {{ quantidade_perdido }} ({{ ((quantidade_perdido / total_leads) * 100) | round(0) }}%)</span></p>
     </div>
 
-    <h3>Leads Atribuídos</h3>
-    <table class="table-leads">
-        <thead>
-            <tr>
+    <div class="table-leads-wrapper">
+        <table class="table-leads">
+
+         <h3>Leads Atribuídos</h3>
+             <table class="table-leads">
+                 <thead>
+                  <tr>
                 <th>Data do Lead</th>
                 <th>Nome do Lead</th>
                 <th>Email</th> <!-- Exibindo o campo de contato como email -->
@@ -29,22 +36,22 @@
         </thead>
         <tbody>
             {% for lead in leads %}
-            <tr>
+            <tr class="status-{{ lead.status|lower }}"> <!-- Aplica a classe de status diretamente na linha -->
                 <td>{{ lead.data_lead.strftime('%d/%m/%y') }}</td>
                 <td>{{ lead.nome }}</td>
                 <td>
                     <form method="POST" action="{{ url_for('atualizar_lead', vendedor_id=vendedor.id) }}" class="form-inline">
                         <input type="hidden" name="lead_id" value="{{ lead.id }}">
-                        <input type="text" name="contato" value="{{ lead.contato }}" placeholder="Email"> <!-- Email editável -->
+                        <input type="text" name="contato" value="{{ lead.contato }}" placeholder="Email">
                 </td>
                 <td>{{ lead.veiculo }}</td>
                 <td>{{ lead.modelo }}</td>
                 <td>
-                        <select name="status">
-                            <option value="Aberto" {% if lead.status == 'Aberto' %}selected{% endif %}>Aberto</option>
-                            <option value="Convertido" {% if lead.status == 'Convertido' %}selected{% endif %}>Convertido</option>
-                            <option value="Perdido" {% if lead.status == 'Perdido' %}selected{% endif %}>Perdido</option>
-                        </select>
+                    <select name="status">
+                        <option value="Aberto" {% if lead.status == 'Aberto' %}selected{% endif %}>Aberto</option>
+                        <option value="Convertido" {% if lead.status == 'Convertido' %}selected{% endif %}>Convertido</option>
+                        <option value="Perdido" {% if lead.status == 'Perdido' %}selected{% endif %}>Perdido</option>
+                    </select>
                 </td>
                 <td>
                     <select name="faturado">
@@ -61,7 +68,6 @@
                 <td>
                     <button type="submit" class="botao-salvar">Salvar</button>
                     </form>
-                    <!-- Formulário para remover o lead -->
                     <form method="POST" action="{{ url_for('remover_lead', vendedor_id=vendedor.id, lead_id=lead.id) }}" class="form-inline" style="display:inline;">
                         <button type="submit" class="botao-remover">Excluir</button>
                     </form>
@@ -69,11 +75,15 @@
             </tr>
             {% else %}
             <tr>
-                <td colspan="10">Nenhum lead encontrado.</td> <!-- Atualizado o colspan para incluir o campo de email -->
+                <td colspan="10">Nenhum lead encontrado.</td>
             </tr>
             {% endfor %}
         </tbody>
+        
     </table>
+
+        /</table>
+    </div>
 
     <h3>Desempenho do Vendedor</h3>
     <div class="grafico-performance-container">
@@ -82,6 +92,7 @@
 
     <!-- Filtro de Tempo para o Gráfico Temporal -->
     <h3>Filtro de Tempo (Mensal)</h3>
+    <div class="date-filter-wrapper">
     <div class="date-filter">
         <label for="inicio" class="filter-label">Período de Início:</label>
         <input type="month" id="inicio" class="filter-input" name="inicio">
@@ -93,7 +104,7 @@
     <div class="filter-button-wrapper">
         <button type="button" onclick="atualizarGraficoTemporal()" class="filter-button">Filtrar</button>
     </div>
-
+    </div>
     <h3>Desempenho Temporal do Vendedor</h3>
     <div class="grafico-performance-container">
         <canvas id="graficoPerformanceTemporal"></canvas>
